@@ -1,8 +1,9 @@
 package com.gulimall.coupon;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+@MapperScan("com.gulimall.coupon.mapper")
 @SpringBootApplication
 public class GulimallCouponApplication {
 

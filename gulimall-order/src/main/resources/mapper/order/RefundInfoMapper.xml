@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gulimall.order.mapper.RefundInfoMapper">
+
+    <resultMap type="com.gulimall.order.domain.RefundInfo" id="RefundInfoResult">
+            <result property="id" column="id" />
+            <result property="orderReturnId" column="order_return_id" />
+            <result property="refund" column="refund" />
+            <result property="refundSn" column="refund_sn" />
+            <result property="refundStatus" column="refund_status" />
+            <result property="refundChannel" column="refund_channel" />
+            <result property="refundContent" column="refund_content" />
+    </resultMap>
+
+    <!-- ============================================================ -->
+    <!-- 基础 CRUD 全部由 MyBatis-Plus 的 BaseMapper 提供，无需在此实现 -->
+    <!-- 只有自定义的多表查询、复杂统计等才需要在这里编写 SQL            -->
+    <!-- ============================================================ -->
+
+</mapper>

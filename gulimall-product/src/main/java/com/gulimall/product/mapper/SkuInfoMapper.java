@@ -1,0 +1,17 @@
+package com.gulimall.product.mapper;
+
+import com.gulimall.product.domain.SkuInfo;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+ * 【请填写功能名称】Mapper接口
+ * 
+ * @author jiangdan
+ * @date 2026-09-12
+ */
+@Mapper
+public interface SkuInfoMapper extends BaseMapper<SkuInfo>
+{
+
+}

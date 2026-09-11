@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gulimall.coupon.mapper.SpuBoundsMapper">
+
+    <resultMap type="com.gulimall.coupon.domain.SpuBounds" id="SpuBoundsResult">
+            <result property="id" column="id" />
+            <result property="spuId" column="spu_id" />
+            <result property="growBounds" column="grow_bounds" />
+            <result property="buyBounds" column="buy_bounds" />
+            <result property="work" column="work" />
+    </resultMap>
+
+    <!-- ============================================================ -->
+    <!-- 基础 CRUD 全部由 MyBatis-Plus 的 BaseMapper 提供，无需在此实现 -->
+    <!-- 只有自定义的多表查询、复杂统计等才需要在这里编写 SQL            -->
+    <!-- ============================================================ -->
+
+</mapper>

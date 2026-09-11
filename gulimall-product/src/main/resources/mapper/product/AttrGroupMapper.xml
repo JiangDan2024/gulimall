@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gulimall.product.mapper.AttrGroupMapper">
+
+    <resultMap type="com.gulimall.product.domain.AttrGroup" id="AttrGroupResult">
+            <result property="attrGroupId" column="attr_group_id" />
+            <result property="attrGroupName" column="attr_group_name" />
+            <result property="sort" column="sort" />
+            <result property="descript" column="descript" />
+            <result property="icon" column="icon" />
+            <result property="catelogId" column="catelog_id" />
+    </resultMap>
+
+    <!-- ============================================================ -->
+    <!-- 基础 CRUD 全部由 MyBatis-Plus 的 BaseMapper 提供，无需在此实现 -->
+    <!-- 只有自定义的多表查询、复杂统计等才需要在这里编写 SQL            -->
+    <!-- ============================================================ -->
+
+</mapper>

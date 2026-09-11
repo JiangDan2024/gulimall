@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gulimall.coupon.mapper.CouponSpuCategoryRelationMapper">
+
+    <resultMap type="com.gulimall.coupon.domain.CouponSpuCategoryRelation" id="CouponSpuCategoryRelationResult">
+            <result property="id" column="id" />
+            <result property="couponId" column="coupon_id" />
+            <result property="categoryId" column="category_id" />
+            <result property="categoryName" column="category_name" />
+    </resultMap>
+
+    <!-- ============================================================ -->
+    <!-- 基础 CRUD 全部由 MyBatis-Plus 的 BaseMapper 提供，无需在此实现 -->
+    <!-- 只有自定义的多表查询、复杂统计等才需要在这里编写 SQL            -->
+    <!-- ============================================================ -->
+
+</mapper>

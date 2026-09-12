@@ -12,48 +12,47 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gulimall.common.annotation.Log;
 import com.gulimall.common.enums.BusinessType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.gulimall.common.core.page.TableDataInfo;
 import com.gulimall.order.domain.OrderSetting;
 import com.gulimall.order.service.IOrderSettingService;
 import com.gulimall.common.core.controller.BaseController;
 import com.gulimall.common.core.domain.AjaxResult;
-import com.gulimall.common.utils.poi.ExcelUtil;
 import com.gulimall.common.core.page.TableDataInfo;
+
 
 /**
  * 【请填写功能名称】Controller
  *
  * @author jiangdan
- * @date 2026-09-11
+ * @date 2026-09-12
  */
 @Controller
-@RequestMapping("/order/order_setting")
+@RequestMapping("/order/omsOrderSetting")
 public class OrderSettingController extends BaseController
 {
-    private String prefix = "order/order_setting";
+    private String prefix = "order/omsOrderSetting";
 
     @Autowired
     private IOrderSettingService orderSettingService;
 
     @GetMapping()
-    public String order_setting()
+    public String setting()
     {
-        return prefix + "/order_setting";
+        return prefix + "/setting";
     }
 
-    /**
-     * 查询【请填写功能名称】列表
-     */
-    @GetMapping("/list")
-    @ResponseBody
-    public TableDataInfo list(OrderSetting orderSetting)
-    {
-        startPage();
-        List<OrderSetting> list = orderSettingService.list(
-                new QueryWrapper<>(orderSetting)
-        );
-        return getDataTable(list);
-    }
+        /**
+         * 查询【请填写功能名称】列表
+         */
+        @GetMapping("/list")
+        @ResponseBody
+        public TableDataInfo list(OrderSetting orderSetting)
+        {
+            startPage();
+            List<OrderSetting> list = orderSettingService.list(
+                    new QueryWrapper<>(orderSetting)
+            );
+            return getDataTable(list);
+        }
 
     /**
      * 新增【请填写功能名称】

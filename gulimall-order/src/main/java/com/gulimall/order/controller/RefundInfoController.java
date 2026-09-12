@@ -12,48 +12,47 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gulimall.common.annotation.Log;
 import com.gulimall.common.enums.BusinessType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.gulimall.common.core.page.TableDataInfo;
 import com.gulimall.order.domain.RefundInfo;
 import com.gulimall.order.service.IRefundInfoService;
 import com.gulimall.common.core.controller.BaseController;
 import com.gulimall.common.core.domain.AjaxResult;
-import com.gulimall.common.utils.poi.ExcelUtil;
 import com.gulimall.common.core.page.TableDataInfo;
+
 
 /**
  * 【请填写功能名称】Controller
  *
  * @author jiangdan
- * @date 2026-09-11
+ * @date 2026-09-12
  */
 @Controller
-@RequestMapping("/order/refund_info")
+@RequestMapping("/order/omsRefundInfo")
 public class RefundInfoController extends BaseController
 {
-    private String prefix = "order/refund_info";
+    private String prefix = "order/omsRefundInfo";
 
     @Autowired
     private IRefundInfoService refundInfoService;
 
     @GetMapping()
-    public String refund_info()
+    public String info()
     {
-        return prefix + "/refund_info";
+        return prefix + "/info";
     }
 
-    /**
-     * 查询【请填写功能名称】列表
-     */
-    @GetMapping("/list")
-    @ResponseBody
-    public TableDataInfo list(RefundInfo refundInfo)
-    {
-        startPage();
-        List<RefundInfo> list = refundInfoService.list(
-                new QueryWrapper<>(refundInfo)
-        );
-        return getDataTable(list);
-    }
+        /**
+         * 查询【请填写功能名称】列表
+         */
+        @GetMapping("/list")
+        @ResponseBody
+        public TableDataInfo list(RefundInfo refundInfo)
+        {
+            startPage();
+            List<RefundInfo> list = refundInfoService.list(
+                    new QueryWrapper<>(refundInfo)
+            );
+            return getDataTable(list);
+        }
 
     /**
      * 新增【请填写功能名称】

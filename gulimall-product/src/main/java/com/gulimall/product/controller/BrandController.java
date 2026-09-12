@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gulimall.common.annotation.Log;
 import com.gulimall.common.enums.BusinessType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.gulimall.common.core.page.TableDataInfo;
 import com.gulimall.product.domain.Brand;
 import com.gulimall.product.service.IBrandService;
 import com.gulimall.common.core.controller.BaseController;
 import com.gulimall.common.core.domain.AjaxResult;
-import com.gulimall.common.utils.poi.ExcelUtil;
 import com.gulimall.common.core.page.TableDataInfo;
 
 

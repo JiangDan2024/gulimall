@@ -2,7 +2,6 @@ package com.gulimall.coupon.domain;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.util.Date;
 import com.gulimall.common.annotation.Excel;
 import lombok.Getter;
 import lombok.Setter;

@@ -12,48 +12,47 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gulimall.common.annotation.Log;
 import com.gulimall.common.enums.BusinessType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.gulimall.common.core.page.TableDataInfo;
 import com.gulimall.order.domain.OrderOperateHistory;
 import com.gulimall.order.service.IOrderOperateHistoryService;
 import com.gulimall.common.core.controller.BaseController;
 import com.gulimall.common.core.domain.AjaxResult;
-import com.gulimall.common.utils.poi.ExcelUtil;
 import com.gulimall.common.core.page.TableDataInfo;
+
 
 /**
  * 【请填写功能名称】Controller
  *
  * @author jiangdan
- * @date 2026-09-11
+ * @date 2026-09-12
  */
 @Controller
-@RequestMapping("/order/order_operate_history")
+@RequestMapping("/order/omsOrderOperateHistory")
 public class OrderOperateHistoryController extends BaseController
 {
-    private String prefix = "order/order_operate_history";
+    private String prefix = "order/omsOrderOperateHistory";
 
     @Autowired
     private IOrderOperateHistoryService orderOperateHistoryService;
 
     @GetMapping()
-    public String order_operate_history()
+    public String history()
     {
-        return prefix + "/order_operate_history";
+        return prefix + "/history";
     }
 
-    /**
-     * 查询【请填写功能名称】列表
-     */
-    @GetMapping("/list")
-    @ResponseBody
-    public TableDataInfo list(OrderOperateHistory orderOperateHistory)
-    {
-        startPage();
-        List<OrderOperateHistory> list = orderOperateHistoryService.list(
-                new QueryWrapper<>(orderOperateHistory)
-        );
-        return getDataTable(list);
-    }
+        /**
+         * 查询【请填写功能名称】列表
+         */
+        @GetMapping("/list")
+        @ResponseBody
+        public TableDataInfo list(OrderOperateHistory orderOperateHistory)
+        {
+            startPage();
+            List<OrderOperateHistory> list = orderOperateHistoryService.list(
+                    new QueryWrapper<>(orderOperateHistory)
+            );
+            return getDataTable(list);
+        }
 
     /**
      * 新增【请填写功能名称】

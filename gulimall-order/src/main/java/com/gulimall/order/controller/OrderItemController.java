@@ -12,48 +12,47 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gulimall.common.annotation.Log;
 import com.gulimall.common.enums.BusinessType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.gulimall.common.core.page.TableDataInfo;
 import com.gulimall.order.domain.OrderItem;
 import com.gulimall.order.service.IOrderItemService;
 import com.gulimall.common.core.controller.BaseController;
 import com.gulimall.common.core.domain.AjaxResult;
-import com.gulimall.common.utils.poi.ExcelUtil;
 import com.gulimall.common.core.page.TableDataInfo;
+
 
 /**
  * 【请填写功能名称】Controller
  *
  * @author jiangdan
- * @date 2026-09-11
+ * @date 2026-09-12
  */
 @Controller
-@RequestMapping("/order/order_item")
+@RequestMapping("/order/omsOrderItem")
 public class OrderItemController extends BaseController
 {
-    private String prefix = "order/order_item";
+    private String prefix = "order/omsOrderItem";
 
     @Autowired
     private IOrderItemService orderItemService;
 
     @GetMapping()
-    public String order_item()
+    public String item()
     {
-        return prefix + "/order_item";
+        return prefix + "/item";
     }
 
-    /**
-     * 查询【请填写功能名称】列表
-     */
-    @GetMapping("/list")
-    @ResponseBody
-    public TableDataInfo list(OrderItem orderItem)
-    {
-        startPage();
-        List<OrderItem> list = orderItemService.list(
-                new QueryWrapper<>(orderItem)
-        );
-        return getDataTable(list);
-    }
+        /**
+         * 查询【请填写功能名称】列表
+         */
+        @GetMapping("/list")
+        @ResponseBody
+        public TableDataInfo list(OrderItem orderItem)
+        {
+            startPage();
+            List<OrderItem> list = orderItemService.list(
+                    new QueryWrapper<>(orderItem)
+            );
+            return getDataTable(list);
+        }
 
     /**
      * 新增【请填写功能名称】

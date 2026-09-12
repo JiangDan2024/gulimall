@@ -1,21 +1,18 @@
 package com.gulimall.coupon.domain;
 
 import com.gulimall.common.annotation.Excel;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
-import java.util.List;
 import com.gulimall.common.core.domain.BaseEntity;
 
 /**
  * 【请填写功能名称】对象 sms_home_subject
  *
  * @author jiangdan
- * @date 2026-09-11
+ * @date 2026-09-12
  */
 @Getter
 @Setter

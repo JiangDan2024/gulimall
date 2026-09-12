@@ -12,48 +12,47 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gulimall.common.annotation.Log;
 import com.gulimall.common.enums.BusinessType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.gulimall.common.core.page.TableDataInfo;
 import com.gulimall.order.domain.OrderReturnReason;
 import com.gulimall.order.service.IOrderReturnReasonService;
 import com.gulimall.common.core.controller.BaseController;
 import com.gulimall.common.core.domain.AjaxResult;
-import com.gulimall.common.utils.poi.ExcelUtil;
 import com.gulimall.common.core.page.TableDataInfo;
+
 
 /**
  * 【请填写功能名称】Controller
  *
  * @author jiangdan
- * @date 2026-09-11
+ * @date 2026-09-12
  */
 @Controller
-@RequestMapping("/order/order_return_reason")
+@RequestMapping("/order/omsOrderReturnReason")
 public class OrderReturnReasonController extends BaseController
 {
-    private String prefix = "order/order_return_reason";
+    private String prefix = "order/omsOrderReturnReason";
 
     @Autowired
     private IOrderReturnReasonService orderReturnReasonService;
 
     @GetMapping()
-    public String order_return_reason()
+    public String reason()
     {
-        return prefix + "/order_return_reason";
+        return prefix + "/reason";
     }
 
-    /**
-     * 查询【请填写功能名称】列表
-     */
-    @GetMapping("/list")
-    @ResponseBody
-    public TableDataInfo list(OrderReturnReason orderReturnReason)
-    {
-        startPage();
-        List<OrderReturnReason> list = orderReturnReasonService.list(
-                new QueryWrapper<>(orderReturnReason)
-        );
-        return getDataTable(list);
-    }
+        /**
+         * 查询【请填写功能名称】列表
+         */
+        @GetMapping("/list")
+        @ResponseBody
+        public TableDataInfo list(OrderReturnReason orderReturnReason)
+        {
+            startPage();
+            List<OrderReturnReason> list = orderReturnReasonService.list(
+                    new QueryWrapper<>(orderReturnReason)
+            );
+            return getDataTable(list);
+        }
 
     /**
      * 新增【请填写功能名称】

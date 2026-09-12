@@ -12,48 +12,47 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gulimall.common.annotation.Log;
 import com.gulimall.common.enums.BusinessType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.gulimall.common.core.page.TableDataInfo;
 import com.gulimall.order.domain.PaymentInfo;
 import com.gulimall.order.service.IPaymentInfoService;
 import com.gulimall.common.core.controller.BaseController;
 import com.gulimall.common.core.domain.AjaxResult;
-import com.gulimall.common.utils.poi.ExcelUtil;
 import com.gulimall.common.core.page.TableDataInfo;
+
 
 /**
  * 【请填写功能名称】Controller
  *
  * @author jiangdan
- * @date 2026-09-11
+ * @date 2026-09-12
  */
 @Controller
-@RequestMapping("/order/payment_info")
+@RequestMapping("/order/omsPaymentInfo")
 public class PaymentInfoController extends BaseController
 {
-    private String prefix = "order/payment_info";
+    private String prefix = "order/omsPaymentInfo";
 
     @Autowired
     private IPaymentInfoService paymentInfoService;
 
     @GetMapping()
-    public String payment_info()
+    public String info()
     {
-        return prefix + "/payment_info";
+        return prefix + "/info";
     }
 
-    /**
-     * 查询【请填写功能名称】列表
-     */
-    @GetMapping("/list")
-    @ResponseBody
-    public TableDataInfo list(PaymentInfo paymentInfo)
-    {
-        startPage();
-        List<PaymentInfo> list = paymentInfoService.list(
-                new QueryWrapper<>(paymentInfo)
-        );
-        return getDataTable(list);
-    }
+        /**
+         * 查询【请填写功能名称】列表
+         */
+        @GetMapping("/list")
+        @ResponseBody
+        public TableDataInfo list(PaymentInfo paymentInfo)
+        {
+            startPage();
+            List<PaymentInfo> list = paymentInfoService.list(
+                    new QueryWrapper<>(paymentInfo)
+            );
+            return getDataTable(list);
+        }
 
     /**
      * 新增【请填写功能名称】

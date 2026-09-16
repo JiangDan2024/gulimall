@@ -4,17 +4,4 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gulimall.ware.mapper.WareOrderTaskDetailMapper">
 
-    <resultMap type="com.gulimall.ware.domain.WareOrderTaskDetail" id="WareOrderTaskDetailResult">
-            <result property="id" column="id" />
-            <result property="skuId" column="sku_id" />
-            <result property="skuName" column="sku_name" />
-            <result property="skuNum" column="sku_num" />
-            <result property="taskId" column="task_id" />
-    </resultMap>
-
-    <!-- ============================================================ -->
-    <!-- 基础 CRUD 全部由 MyBatis-Plus 的 BaseMapper 提供，无需在此实现 -->
-    <!-- 只有自定义的多表查询、复杂统计等才需要在这里编写 SQL            -->
-    <!-- ============================================================ -->
-
 </mapper>

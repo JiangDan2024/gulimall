@@ -4,22 +4,4 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gulimall.ware.mapper.PurchaseMapper">
 
-    <resultMap type="com.gulimall.ware.domain.Purchase" id="PurchaseResult">
-            <result property="id" column="id" />
-            <result property="assigneeId" column="assignee_id" />
-            <result property="assigneeName" column="assignee_name" />
-            <result property="phone" column="phone" />
-            <result property="priority" column="priority" />
-            <result property="status" column="status" />
-            <result property="wareId" column="ware_id" />
-            <result property="amount" column="amount" />
-            <result property="createTime" column="create_time" />
-            <result property="updateTime" column="update_time" />
-    </resultMap>
-
-    <!-- ============================================================ -->
-    <!-- 基础 CRUD 全部由 MyBatis-Plus 的 BaseMapper 提供，无需在此实现 -->
-    <!-- 只有自定义的多表查询、复杂统计等才需要在这里编写 SQL            -->
-    <!-- ============================================================ -->
-
 </mapper>

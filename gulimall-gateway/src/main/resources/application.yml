@@ -1,0 +1,23 @@
+spring:
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: test_route
+              uri:
+                https://www.baidu.com
+              predicates:
+                - Query=url,baidu
+            - id: qq_route
+              uri:
+                https://www.qq.com
+              predicates:
+                - Query=url,qq
+
+            - id: product_route
+              uri: lb://gulimall-product
+              predicates:
+                - Path=/gulimall-api/product/**
+              filters:
+                - RewritePath=/gulimall-api/(?<segment>.*),/$\{segment}

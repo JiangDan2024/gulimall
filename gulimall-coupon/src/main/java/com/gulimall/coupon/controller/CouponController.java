@@ -1,14 +1,13 @@
 package com.gulimall.coupon.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.gulimall.common.annotation.Log;
 import com.gulimall.common.enums.BusinessType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -25,7 +24,8 @@ import com.gulimall.common.core.page.TableDataInfo;
  * @author jiangdan
  * @date 2026-09-12
  */
-@Controller
+@RefreshScope
+@RestController
 @RequestMapping("/coupon/smsCoupon")
 public class CouponController extends BaseController
 {
@@ -34,10 +34,28 @@ public class CouponController extends BaseController
     @Autowired
     private ICouponService couponService;
 
+    @Value("${coupon.user.name}")
+    private String userName;
+
+    @Value("${coupon.user.age}")
+    private Integer userAge;
+
     @GetMapping()
     public String coupon()
     {
         return prefix + "/coupon";
+    }
+
+    @RequestMapping("/test")
+    public String test(){
+        return "userName:"+userName+",age:"+userAge;
+    }
+
+    @RequestMapping("/member/list")
+    public AjaxResult memberCoupons(){
+        Coupon coupon = new Coupon();
+        coupon.setCouponName("满100减10");
+        return AjaxResult.success().put("coupons", Arrays.asList(coupon));
     }
 
         /**

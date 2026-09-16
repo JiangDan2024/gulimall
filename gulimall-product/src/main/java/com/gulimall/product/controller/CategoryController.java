@@ -4,11 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.gulimall.common.annotation.Log;
 import com.gulimall.common.enums.BusinessType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -25,7 +21,7 @@ import com.gulimall.common.core.page.TableDataInfo;
  * @author jiangdan
  * @date 2026-09-12
  */
-@Controller
+@RestController
 @RequestMapping("/product/pmsCategory")
 public class CategoryController extends BaseController
 {
@@ -43,15 +39,18 @@ public class CategoryController extends BaseController
         /**
          * 查询【请填写功能名称】列表
          */
-        @GetMapping("/list")
+        @GetMapping("/list/tree")
         @ResponseBody
-        public TableDataInfo list(Category category)
+        public AjaxResult list()
         {
-            startPage();
-            List<Category> list = categoryService.list(
-                    new QueryWrapper<>(category)
-            );
-            return getDataTable(list);
+//            startPage();
+//            List<Category> list = categoryService.list(
+//                    new QueryWrapper<>(category)
+//            );
+//            return getDataTable(list);
+            List<Category> entities = categoryService.listWithTree();
+
+            return AjaxResult.success().put("data", entities);
         }
 
     /**
@@ -69,9 +68,21 @@ public class CategoryController extends BaseController
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(Category category)
+    public AjaxResult addSave(@RequestBody Category category)
     {
         return categoryService.save(category)
+                ? AjaxResult.success()
+                : AjaxResult.error();
+    }
+
+    /*
+     * 批量更新
+     */
+    @PostMapping("/batchEdit")
+    @ResponseBody
+    public AjaxResult batchEdit(@RequestBody List<Category> list)
+    {
+        return categoryService.updateBatchById(list)
                 ? AjaxResult.success()
                 : AjaxResult.error();
     }
@@ -79,12 +90,11 @@ public class CategoryController extends BaseController
     /**
      * 修改【请填写功能名称】
      */
-    @GetMapping("/edit/{catId}")
-    public String edit(@PathVariable("catId") Long catId, ModelMap mmap)
+    @GetMapping("/getById/{catId}")
+    public AjaxResult getById(@PathVariable Long catId)
     {
         Category category = categoryService.getById(catId);
-        mmap.put("category", category);
-        return prefix + "/edit";
+        return AjaxResult.success().put("data",category);
     }
 
     /**
@@ -93,23 +103,23 @@ public class CategoryController extends BaseController
     @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(Category category)
+    public AjaxResult editSave(@RequestBody Category category)
     {
         return categoryService.updateById(category)
                 ? AjaxResult.success()
                 : AjaxResult.error();
     }
 
-        /**
-         * 删除【请填写功能名称】
-         */
-        @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-        @PostMapping( "/remove")
-        @ResponseBody
-        public AjaxResult remove(List<String> ids)
-        {
-            return categoryService.removeByIds(ids)
-                    ? AjaxResult.success()
-                    : AjaxResult.error();
-        }
+    /**
+     * 删除【请填写功能名称】
+     */
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
+    @PostMapping( "/remove")
+    @ResponseBody
+    public AjaxResult remove(@RequestBody List<Long> ids)
+    {
+        return categoryService.removeMenusByIds(ids)>0
+                ? AjaxResult.success()
+                : AjaxResult.error();
+    }
 }

@@ -7,6 +7,9 @@ import com.gulimall.product.mapper.CategoryMapper;
 import com.gulimall.product.domain.Category;
 import com.gulimall.product.service.ICategoryService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * 【请填写功能名称】Service业务层处理
  * 
@@ -17,4 +20,74 @@ import com.gulimall.product.service.ICategoryService;
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper,Category> implements ICategoryService
 {
 
+//    @Override
+//    public List<Category> listWithTree() {
+//        //查询所有数据
+//        List<Category> entites = baseMapper.selectList(null);
+//        //找出一级目录
+//        List<Category> collect = entites.stream().filter(category ->
+//                //父目录为0找出一级目录
+//                category.getParentCid() == 0
+//        ).map((menu) -> {
+//            menu.setChildren(getChildren(menu, entites));
+//            return menu;
+//        }).sorted((menu1, menu2) -> {
+//            return Math.toIntExact((menu1.getSort() == null ? 0 : menu1.getSort()) - (menu2.getSort() == null ? 0 : menu2.getSort()));
+//        }).collect(Collectors.toList());
+//        return collect;
+//    }
+//
+//    private List<Category> getChildren(Category root,List<Category> all){
+//        List<Category> children = all.stream().filter(category ->{
+//            return category.getParentCid() == root.getCatId();
+//        }).map(category -> {
+//            category.setChildren(getChildren(category,all));
+//            return category;
+//        }).sorted((menu1,menu2)->{
+//            return Math.toIntExact((menu1.getSort() == null ? 0 : menu1.getSort()) - (menu2.getSort() == null ? 0 : menu2.getSort()));
+//        }).collect(Collectors.toList());
+//
+//        return children;
+//    }
+    @Override
+    public List<Category> listWithTree() {
+        // 查询所有数据
+        List<Category> entities = baseMapper.selectList(null);
+
+        // 找出一级目录
+        return entities.stream()
+                .filter(category -> category.getParentCid() != null && category.getParentCid() == 0L)
+                .map(category -> {
+                    category.setChildren(getChildren(category, entities));
+                    return category;
+                })
+                .sorted((m1, m2) -> {
+                    long s1 = m1.getSort() == null ? 0 : m1.getSort();
+                    long s2 = m2.getSort() == null ? 0 : m2.getSort();
+                    return Long.compare(s1, s2);
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public int removeMenusByIds(List<Long> ids) {
+        //todo 删除前先检查id是否有其他正在使用的地方
+        return baseMapper.deleteByIds(ids);
+    }
+
+    private List<Category> getChildren(Category root, List<Category> all) {
+        return all.stream()
+                .filter(category -> category.getParentCid() != null
+                        && category.getParentCid().equals(root.getCatId()))
+                .map(category -> {
+                    category.setChildren(getChildren(category, all));
+                    return category;
+                })
+                .sorted((m1, m2) -> {
+                    long s1 = m1.getSort() == null ? 0 : m1.getSort();
+                    long s2 = m2.getSort() == null ? 0 : m2.getSort();
+                    return Long.compare(s1, s2);
+                })
+                .collect(Collectors.toList());
+    }
 }

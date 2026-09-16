@@ -1,14 +1,21 @@
 spring:
-  datasource:
-    username: root
-    password: 123456
-    url: jdbc:mysql://localhost:3306/guilimall-pms?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-    driver-class-name: com.mysql.cj.jdbc.Driver
-mybatis-plus:
-  mapper-locations:
-    - classpath*:/mapper/**/*.xml
-  global-config:
-    db-config:
-      id-type: auto
-server:
-  port: 11000
+  application:
+    name: gulimall-product
+
+  cloud:
+    nacos:
+      # 全局地址和账号，discovery 和 config 都继承
+      server-addr: 10.173.1.224:8848
+      username: nacos
+      password: nacos
+
+      discovery:
+
+      config:
+        namespace: 94b415d7-4269-4e8a-a8bc-e36e817c42d4
+        file-extension: yaml
+
+  # 用 import 替代老版本的 ext-config
+  config:
+    import:
+      - optional:nacos:gulimall-product.yml?group=dev&refreshEnabled=true

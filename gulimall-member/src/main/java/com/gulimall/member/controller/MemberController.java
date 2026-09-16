@@ -1,14 +1,12 @@
 package com.gulimall.member.controller;
 
 import java.util.List;
+
+import com.gulimall.member.feign.CouponFeignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.gulimall.common.annotation.Log;
 import com.gulimall.common.enums.BusinessType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -25,7 +23,7 @@ import com.gulimall.common.core.page.TableDataInfo;
  * @author jiangdan
  * @date 2026-09-12
  */
-@Controller
+@RestController
 @RequestMapping("/member/umsMember")
 public class MemberController extends BaseController
 {
@@ -34,10 +32,23 @@ public class MemberController extends BaseController
     @Autowired
     private IMemberService memberService;
 
+    @Autowired
+    CouponFeignService couponFeignService;
+
     @GetMapping()
     public String member()
     {
         return prefix + "/member";
+    }
+
+    @RequestMapping("/coupons")
+    public AjaxResult test(){
+        Member member = new Member();
+        member.setNickname("张三");
+
+        AjaxResult couponsRes = couponFeignService.memberCoupons();
+        return AjaxResult.success().put("member",member).put("coupons",couponsRes.get("coupons"));
+
     }
 
         /**

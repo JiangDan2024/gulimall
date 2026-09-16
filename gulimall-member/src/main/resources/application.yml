@@ -1,14 +1,41 @@
+#server:
+#  port: 7000
+
 spring:
-  datasource:
-    username: root
-    password: 123456
-    url: jdbc:mysql://localhost:3306/gulimall-ums?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-    driver-class-name: com.mysql.cj.jdbc.Driver
-mybatis-plus:
-  mapper-locations:
-    - classpath*:/mapper/**/*.xml
-  global-config:
-    db-config:
-      id-type: auto
-server:
-  port: 10000
+  application:
+    name: gulimall-member
+
+  cloud:
+    nacos:
+      # 全局地址和账号，discovery 和 config 都继承
+      server-addr: 10.173.1.224:8848
+      username: nacos
+      password: nacos
+
+      discovery:
+
+      config:
+        namespace: c6c2b031-2ee5-4c3d-91b4-bdc0ee4ae61d
+        file-extension: properties
+
+  # 用 import 替代老版本的 ext-config
+  config:
+    import:
+      - optional:nacos:other.properties?group=dev&refreshEnabled=true
+      - optional:nacos:database.properties?group=dev&refreshEnabled=true
+      - optional:nacos:mybatis.properties?group=dev&refreshEnabled=true
+      - optional:nacos:server.properties?group=dev&refreshEnabled=true
+
+# 如果你要本地兜底数据库配置，可以留着，从 Nacos 拉不到时会用这里的
+#  datasource:
+#    username: root
+#    password: 123456
+#    url: jdbc:mysql://localhost:3306/gulimall-sms?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+
+#mybatis-plus:
+#  mapper-locations:
+#    - classpath*:/mapper/**/*.xml
+#  global-config:
+#    db-config:
+#      id-type: auto

@@ -1,12 +1,12 @@
 package com.gulimall.product.domain;
 
+import com.baomidou.mybatisplus.annotation.*;
 import com.gulimall.common.annotation.Excel;
 import lombok.Getter;
 import lombok.Setter;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.gulimall.common.core.domain.BaseEntity;
+
+import java.util.List;
 
 /**
  * 【请填写功能名称】对象 pms_category
@@ -39,6 +39,7 @@ public class Category extends BaseEntity
 
         /** 是否显示[0-不显示，1显示] */
         @Excel(name = "是否显示[0-不显示，1显示]")
+        @TableLogic(value = "1",delval = "0")
     private Long showStatus;
 
         /** 排序 */
@@ -57,4 +58,6 @@ public class Category extends BaseEntity
         @Excel(name = "商品数量")
     private Long productCount;
 
+        @TableField(exist = false)
+    private List<Category> children;
 }

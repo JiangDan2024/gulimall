@@ -1,32 +1,32 @@
 package com.gulimall.product.domain;
 
-import com.gulimall.common.annotation.Excel;
-import lombok.Getter;
-import lombok.Setter;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import com.gulimall.common.annotation.Excel;
 import com.gulimall.common.core.domain.BaseEntity;
 
 /**
  * 【请填写功能名称】对象 pms_spu_info_desc
  *
- * @author jiangdan
- * @date 2026-09-12
+ * @author jdjdjd
+ * @date 2026-09-16
  */
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = true)
 @TableName("pms_spu_info_desc")
 public class SpuInfoDesc extends BaseEntity
 {
-    private static final long serialVersionUID = 1L;
+private static final long serialVersionUID = 1L;
 
-        /** 商品id */
+    /** 商品id */
     @TableId(value = "spu_id", type = IdType.AUTO)
     private Long spuId;
 
-        /** 商品介绍 */
-        @Excel(name = "商品介绍")
+    /** 商品介绍 */
+    @Excel(name = "商品介绍")
     private String decript;
 
 }

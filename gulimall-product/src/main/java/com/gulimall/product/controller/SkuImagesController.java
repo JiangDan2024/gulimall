@@ -1,115 +1,117 @@
 package com.gulimall.product.controller;
 
+import java.util.Arrays;
 import java.util.List;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import com.gulimall.common.annotation.Log;
-import com.gulimall.common.enums.BusinessType;
+import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.gulimall.product.domain.SkuImages;
-import com.gulimall.product.service.ISkuImagesService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gulimall.common.annotation.Log;
 import com.gulimall.common.core.controller.BaseController;
 import com.gulimall.common.core.domain.AjaxResult;
+import com.gulimall.common.core.page.PageDomain;
 import com.gulimall.common.core.page.TableDataInfo;
-
+import com.gulimall.common.core.page.TableSupport;
+import com.gulimall.common.enums.BusinessType;
+import com.gulimall.product.domain.SkuImages;
+import com.gulimall.product.service.ISkuImagesService;
+import com.gulimall.common.utils.poi.ExcelUtil;
 
 /**
  * 【请填写功能名称】Controller
  *
- * @author jiangdan
- * @date 2026-09-12
+ * @author jdjdjd
+ * @date 2026-09-16
  */
-@Controller
-@RequestMapping("/product/pmsSkuImages")
+@RestController
+@RequestMapping("/product/skuImages")
 public class SkuImagesController extends BaseController
 {
-    private String prefix = "product/pmsSkuImages";
-
     @Autowired
     private ISkuImagesService skuImagesService;
 
-    @GetMapping()
-    public String images()
+    /**
+     * 查询【请填写功能名称】列表
+     */
+    // @PreAuthorize("@ss.hasPermi('product:skuImages:list')")
+    @GetMapping("/list")
+    public TableDataInfo list(SkuImages skuImages)
     {
-        return prefix + "/images";
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Page<SkuImages> page = new Page<>(pageDomain.getPageNum(), pageDomain.getPageSize());
+        QueryWrapper<SkuImages> wrapper = new QueryWrapper<>(skuImages);
+        IPage<SkuImages> result = skuImagesService.page(page, wrapper);
+
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(200);
+        rspData.setMsg("查询成功");
+        rspData.setRows(result.getRecords());
+        rspData.setTotal(result.getTotal());
+        return rspData;
     }
 
-        /**
-         * 查询【请填写功能名称】列表
-         */
-        @GetMapping("/list")
-        @ResponseBody
-        public TableDataInfo list(SkuImages skuImages)
-        {
-            startPage();
-            List<SkuImages> list = skuImagesService.list(
-                    new QueryWrapper<>(skuImages)
-            );
-            return getDataTable(list);
-        }
+    /**
+     * 导出【请填写功能名称】列表
+     */
+    // @PreAuthorize("@ss.hasPermi('product:skuImages:export')")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.EXPORT)
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, SkuImages skuImages)
+    {
+        List<SkuImages> list = skuImagesService.list(new QueryWrapper<>(skuImages));
+        ExcelUtil<SkuImages> util = new ExcelUtil<SkuImages>(SkuImages.class);
+        util.exportExcel(response, list, "【请填写功能名称】数据");
+    }
+
+    /**
+     * 获取【请填写功能名称】详细信息
+     */
+    // @PreAuthorize("@ss.hasPermi('product:skuImages:query')")
+    @GetMapping("/info/{id}")
+    public AjaxResult getInfo(@PathVariable("id") Long id)
+    {
+        return success(skuImagesService.getById(id));
+    }
 
     /**
      * 新增【请填写功能名称】
      */
-    @GetMapping("/add")
-    public String add()
-    {
-        return prefix + "/add";
-    }
-
-    /**
-     * 新增保存【请填写功能名称】
-     */
+    // @PreAuthorize("@ss.hasPermi('product:skuImages:add')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
     @PostMapping("/add")
-    @ResponseBody
-    public AjaxResult addSave(SkuImages skuImages)
+    public AjaxResult add(@RequestBody SkuImages skuImages)
     {
-        return skuImagesService.save(skuImages)
-                ? AjaxResult.success()
-                : AjaxResult.error();
+        return toAjax(skuImagesService.save(skuImages));
     }
 
     /**
      * 修改【请填写功能名称】
      */
-    @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
+    // @PreAuthorize("@ss.hasPermi('product:skuImages:edit')")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
+    @PutMapping("/edit")
+    public AjaxResult edit(@RequestBody SkuImages skuImages)
     {
-        SkuImages skuImages = skuImagesService.getById(id);
-        mmap.put("skuImages", skuImages);
-        return prefix + "/edit";
+        return toAjax(skuImagesService.updateById(skuImages));
     }
 
     /**
-     * 修改保存【请填写功能名称】
+     * 删除【请填写功能名称】
      */
-    @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
-    @PostMapping("/edit")
-    @ResponseBody
-    public AjaxResult editSave(SkuImages skuImages)
+    // @PreAuthorize("@ss.hasPermi('product:skuImages:remove')")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
+    @DeleteMapping("/remove/{ids}")
+    public AjaxResult remove(@PathVariable Long[] ids)
     {
-        return skuImagesService.updateById(skuImages)
-                ? AjaxResult.success()
-                : AjaxResult.error();
+        return toAjax(skuImagesService.removeByIds(Arrays.asList(ids)));
     }
-
-        /**
-         * 删除【请填写功能名称】
-         */
-        @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-        @PostMapping( "/remove")
-        @ResponseBody
-        public AjaxResult remove(List<String> ids)
-        {
-            return skuImagesService.removeByIds(ids)
-                    ? AjaxResult.success()
-                    : AjaxResult.error();
-        }
 }

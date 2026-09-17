@@ -4,21 +4,4 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gulimall.product.mapper.CategoryMapper">
 
-    <resultMap type="com.gulimall.product.domain.Category" id="CategoryResult">
-            <result property="catId" column="cat_id" />
-            <result property="name" column="name" />
-            <result property="parentCid" column="parent_cid" />
-            <result property="catLevel" column="cat_level" />
-            <result property="showStatus" column="show_status" />
-            <result property="sort" column="sort" />
-            <result property="icon" column="icon" />
-            <result property="productUnit" column="product_unit" />
-            <result property="productCount" column="product_count" />
-    </resultMap>
-
-    <!-- ============================================================ -->
-    <!-- 基础 CRUD 全部由 MyBatis-Plus 的 BaseMapper 提供，无需在此实现 -->
-    <!-- 只有自定义的多表查询、复杂统计等才需要在这里编写 SQL            -->
-    <!-- ============================================================ -->
-
 </mapper>

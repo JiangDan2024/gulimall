@@ -1,115 +1,117 @@
 package com.gulimall.product.controller;
 
+import java.util.Arrays;
 import java.util.List;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import com.gulimall.common.annotation.Log;
-import com.gulimall.common.enums.BusinessType;
+import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.gulimall.product.domain.SpuInfoDesc;
-import com.gulimall.product.service.ISpuInfoDescService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gulimall.common.annotation.Log;
 import com.gulimall.common.core.controller.BaseController;
 import com.gulimall.common.core.domain.AjaxResult;
+import com.gulimall.common.core.page.PageDomain;
 import com.gulimall.common.core.page.TableDataInfo;
-
+import com.gulimall.common.core.page.TableSupport;
+import com.gulimall.common.enums.BusinessType;
+import com.gulimall.product.domain.SpuInfoDesc;
+import com.gulimall.product.service.ISpuInfoDescService;
+import com.gulimall.common.utils.poi.ExcelUtil;
 
 /**
  * 【请填写功能名称】Controller
  *
- * @author jiangdan
- * @date 2026-09-12
+ * @author jdjdjd
+ * @date 2026-09-16
  */
-@Controller
-@RequestMapping("/product/pmsSpuInfoDesc")
+@RestController
+@RequestMapping("/product/spuInfoDesc")
 public class SpuInfoDescController extends BaseController
 {
-    private String prefix = "product/pmsSpuInfoDesc";
-
     @Autowired
     private ISpuInfoDescService spuInfoDescService;
 
-    @GetMapping()
-    public String desc()
+    /**
+     * 查询【请填写功能名称】列表
+     */
+    // @PreAuthorize("@ss.hasPermi('product:spuInfoDesc:list')")
+    @GetMapping("/list")
+    public TableDataInfo list(SpuInfoDesc spuInfoDesc)
     {
-        return prefix + "/desc";
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Page<SpuInfoDesc> page = new Page<>(pageDomain.getPageNum(), pageDomain.getPageSize());
+        QueryWrapper<SpuInfoDesc> wrapper = new QueryWrapper<>(spuInfoDesc);
+        IPage<SpuInfoDesc> result = spuInfoDescService.page(page, wrapper);
+
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(200);
+        rspData.setMsg("查询成功");
+        rspData.setRows(result.getRecords());
+        rspData.setTotal(result.getTotal());
+        return rspData;
     }
 
-        /**
-         * 查询【请填写功能名称】列表
-         */
-        @GetMapping("/list")
-        @ResponseBody
-        public TableDataInfo list(SpuInfoDesc spuInfoDesc)
-        {
-            startPage();
-            List<SpuInfoDesc> list = spuInfoDescService.list(
-                    new QueryWrapper<>(spuInfoDesc)
-            );
-            return getDataTable(list);
-        }
+    /**
+     * 导出【请填写功能名称】列表
+     */
+    // @PreAuthorize("@ss.hasPermi('product:spuInfoDesc:export')")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.EXPORT)
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, SpuInfoDesc spuInfoDesc)
+    {
+        List<SpuInfoDesc> list = spuInfoDescService.list(new QueryWrapper<>(spuInfoDesc));
+        ExcelUtil<SpuInfoDesc> util = new ExcelUtil<SpuInfoDesc>(SpuInfoDesc.class);
+        util.exportExcel(response, list, "【请填写功能名称】数据");
+    }
+
+    /**
+     * 获取【请填写功能名称】详细信息
+     */
+    // @PreAuthorize("@ss.hasPermi('product:spuInfoDesc:query')")
+    @GetMapping("/info/{spuId}")
+    public AjaxResult getInfo(@PathVariable("spuId") Long spuId)
+    {
+        return success(spuInfoDescService.getById(spuId));
+    }
 
     /**
      * 新增【请填写功能名称】
      */
-    @GetMapping("/add")
-    public String add()
-    {
-        return prefix + "/add";
-    }
-
-    /**
-     * 新增保存【请填写功能名称】
-     */
+    // @PreAuthorize("@ss.hasPermi('product:spuInfoDesc:add')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
     @PostMapping("/add")
-    @ResponseBody
-    public AjaxResult addSave(SpuInfoDesc spuInfoDesc)
+    public AjaxResult add(@RequestBody SpuInfoDesc spuInfoDesc)
     {
-        return spuInfoDescService.save(spuInfoDesc)
-                ? AjaxResult.success()
-                : AjaxResult.error();
+        return toAjax(spuInfoDescService.save(spuInfoDesc));
     }
 
     /**
      * 修改【请填写功能名称】
      */
-    @GetMapping("/edit/{spuId}")
-    public String edit(@PathVariable("spuId") Long spuId, ModelMap mmap)
+    // @PreAuthorize("@ss.hasPermi('product:spuInfoDesc:edit')")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
+    @PutMapping("/edit")
+    public AjaxResult edit(@RequestBody SpuInfoDesc spuInfoDesc)
     {
-        SpuInfoDesc spuInfoDesc = spuInfoDescService.getById(spuId);
-        mmap.put("spuInfoDesc", spuInfoDesc);
-        return prefix + "/edit";
+        return toAjax(spuInfoDescService.updateById(spuInfoDesc));
     }
 
     /**
-     * 修改保存【请填写功能名称】
+     * 删除【请填写功能名称】
      */
-    @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
-    @PostMapping("/edit")
-    @ResponseBody
-    public AjaxResult editSave(SpuInfoDesc spuInfoDesc)
+    // @PreAuthorize("@ss.hasPermi('product:spuInfoDesc:remove')")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
+    @DeleteMapping("/remove/{spuIds}")
+    public AjaxResult remove(@PathVariable Long[] spuIds)
     {
-        return spuInfoDescService.updateById(spuInfoDesc)
-                ? AjaxResult.success()
-                : AjaxResult.error();
+        return toAjax(spuInfoDescService.removeByIds(Arrays.asList(spuIds)));
     }
-
-        /**
-         * 删除【请填写功能名称】
-         */
-        @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-        @PostMapping( "/remove")
-        @ResponseBody
-        public AjaxResult remove(List<String> ids)
-        {
-            return spuInfoDescService.removeByIds(ids)
-                    ? AjaxResult.success()
-                    : AjaxResult.error();
-        }
 }

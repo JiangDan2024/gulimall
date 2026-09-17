@@ -1,17 +1,14 @@
 package com.gulimall.product.mapper;
 
-import com.gulimall.product.domain.AttrAttrgroupRelation;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+import com.gulimall.product.domain.AttrAttrgroupRelation;
 
 /**
  * 【请填写功能名称】Mapper接口
- * 
- * @author jiangdan
- * @date 2026-09-12
+ *
+ * @author jdjdjd
+ * @date 2026-09-16
  */
-@Mapper
-public interface AttrAttrgroupRelationMapper extends BaseMapper<AttrAttrgroupRelation>
-{
-
+public interface AttrAttrgroupRelationMapper extends BaseMapper<AttrAttrgroupRelation> {
+    // 单表 CRUD 由 BaseMapper 提供，如有复杂连表查询可在此处扩展
 }

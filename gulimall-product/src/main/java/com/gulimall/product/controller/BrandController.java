@@ -1,115 +1,141 @@
 package com.gulimall.product.controller;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.gulimall.common.valid.AddGroup;
+import com.gulimall.common.valid.UpdateGroup;
+import com.gulimall.common.valid.UpdateStatusGroup;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import com.gulimall.common.annotation.Log;
-import com.gulimall.common.enums.BusinessType;
+import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.gulimall.product.domain.Brand;
-import com.gulimall.product.service.IBrandService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gulimall.common.annotation.Log;
 import com.gulimall.common.core.controller.BaseController;
 import com.gulimall.common.core.domain.AjaxResult;
+import com.gulimall.common.core.page.PageDomain;
 import com.gulimall.common.core.page.TableDataInfo;
-
+import com.gulimall.common.core.page.TableSupport;
+import com.gulimall.common.enums.BusinessType;
+import com.gulimall.product.domain.Brand;
+import com.gulimall.product.service.IBrandService;
+import com.gulimall.common.utils.poi.ExcelUtil;
 
 /**
  * 【请填写功能名称】Controller
  *
- * @author jiangdan
- * @date 2026-09-12
+ * @author jdjdjd
+ * @date 2026-09-16
  */
-@Controller
-@RequestMapping("/product/pmsBrand")
+@RestController
+@RequestMapping("/product/brand")
 public class BrandController extends BaseController
 {
-    private String prefix = "product/pmsBrand";
-
     @Autowired
     private IBrandService brandService;
 
-    @GetMapping()
-    public String brand()
+    /**
+     * 查询【请填写功能名称】列表
+     */
+    // @PreAuthorize("@ss.hasPermi('product:brand:list')")
+    @GetMapping("/list")
+    public TableDataInfo list(Brand brand)
     {
-        return prefix + "/brand";
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Page<Brand> page = new Page<>(pageDomain.getPageNum(), pageDomain.getPageSize());
+        QueryWrapper<Brand> wrapper = new QueryWrapper<>(brand);
+        IPage<Brand> result = brandService.page(page, wrapper);
+
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(200);
+        rspData.setMsg("查询成功");
+        rspData.setRows(result.getRecords());
+        rspData.setTotal(result.getTotal());
+        return rspData;
     }
 
-        /**
-         * 查询【请填写功能名称】列表
-         */
-        @GetMapping("/list")
-        @ResponseBody
-        public TableDataInfo list(Brand brand)
-        {
-            startPage();
-            List<Brand> list = brandService.list(
-                    new QueryWrapper<>(brand)
-            );
-            return getDataTable(list);
-        }
+    /**
+     * 导出【请填写功能名称】列表
+     */
+    // @PreAuthorize("@ss.hasPermi('product:brand:export')")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.EXPORT)
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, Brand brand)
+    {
+        List<Brand> list = brandService.list(new QueryWrapper<>(brand));
+        ExcelUtil<Brand> util = new ExcelUtil<Brand>(Brand.class);
+        util.exportExcel(response, list, "【请填写功能名称】数据");
+    }
+
+    /**
+     * 获取【请填写功能名称】详细信息
+     */
+    // @PreAuthorize("@ss.hasPermi('product:brand:query')")
+    @GetMapping("/info/{brandId}")
+    public AjaxResult getInfo(@PathVariable("brandId") Long brandId)
+    {
+        return success(brandService.getById(brandId));
+    }
 
     /**
      * 新增【请填写功能名称】
      */
-    @GetMapping("/add")
-    public String add()
-    {
-        return prefix + "/add";
-    }
-
-    /**
-     * 新增保存【请填写功能名称】
-     */
+    // @PreAuthorize("@ss.hasPermi('product:brand:add')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
     @PostMapping("/add")
-    @ResponseBody
-    public AjaxResult addSave(Brand brand)
+    public AjaxResult add(@Validated(AddGroup.class) @RequestBody Brand brand)
     {
-        return brandService.save(brand)
-                ? AjaxResult.success()
-                : AjaxResult.error();
+//        if(result.hasErrors()){
+//            Map<String,String> errors = new HashMap<>();
+//            result.getFieldErrors().forEach((e)->{
+//                errors.put(e.getField(),e.getDefaultMessage());
+//            });
+//            return AjaxResult.error().put("code",400).put("msg","数据校验出现问题").put("data",errors);
+//        }else{
+            return toAjax(brandService.save(brand));
+//        }
     }
 
     /**
      * 修改【请填写功能名称】
      */
-    @GetMapping("/edit/{brandId}")
-    public String edit(@PathVariable("brandId") Long brandId, ModelMap mmap)
+    // @PreAuthorize("@ss.hasPermi('product:brand:edit')")
+    @Log(title = "更新", businessType = BusinessType.UPDATE)
+    @PutMapping("/edit")
+    public AjaxResult edit(@Validated(UpdateGroup.class) @RequestBody Brand brand)
     {
-        Brand brand = brandService.getById(brandId);
-        mmap.put("brand", brand);
-        return prefix + "/edit";
+        return toAjax(brandService.updateById(brand));
+    }
+
+    @Log(title = "更新展示状态", businessType = BusinessType.UPDATE)
+    @PutMapping("/editShowStatus")
+    public AjaxResult editShowstatus(@Validated(UpdateStatusGroup.class) @RequestBody Brand brand)
+    {
+        return toAjax(brandService.updateById(brand));
     }
 
     /**
-     * 修改保存【请填写功能名称】
+     * 删除【请填写功能名称】
      */
-    @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
-    @PostMapping("/edit")
-    @ResponseBody
-    public AjaxResult editSave(Brand brand)
+    // @PreAuthorize("@ss.hasPermi('product:brand:remove')")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
+    @DeleteMapping("/remove/{brandIds}")
+    public AjaxResult remove(@PathVariable Long[] brandIds)
     {
-        return brandService.updateById(brand)
-                ? AjaxResult.success()
-                : AjaxResult.error();
+        return toAjax(brandService.removeByIds(Arrays.asList(brandIds)));
     }
-
-        /**
-         * 删除【请填写功能名称】
-         */
-        @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-        @PostMapping( "/remove")
-        @ResponseBody
-        public AjaxResult remove(List<String> ids)
-        {
-            return brandService.removeByIds(ids)
-                    ? AjaxResult.success()
-                    : AjaxResult.error();
-        }
 }

@@ -1,17 +1,14 @@
 package com.gulimall.product.mapper;
 
-import com.gulimall.product.domain.ProductAttrValue;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+import com.gulimall.product.domain.ProductAttrValue;
 
 /**
  * 【请填写功能名称】Mapper接口
- * 
- * @author jiangdan
- * @date 2026-09-12
+ *
+ * @author jdjdjd
+ * @date 2026-09-16
  */
-@Mapper
-public interface ProductAttrValueMapper extends BaseMapper<ProductAttrValue>
-{
-
+public interface ProductAttrValueMapper extends BaseMapper<ProductAttrValue> {
+    // 单表 CRUD 由 BaseMapper 提供，如有复杂连表查询可在此处扩展
 }

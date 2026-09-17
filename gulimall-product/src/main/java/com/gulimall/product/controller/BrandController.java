@@ -1,17 +1,14 @@
 package com.gulimall.product.controller;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 import com.gulimall.common.valid.AddGroup;
 import com.gulimall.common.valid.UpdateGroup;
 import com.gulimall.common.valid.UpdateStatusGroup;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

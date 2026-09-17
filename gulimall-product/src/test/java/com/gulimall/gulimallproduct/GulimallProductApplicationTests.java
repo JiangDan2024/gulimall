@@ -1,14 +1,8 @@
 package com.gulimall.gulimallproduct;
 
-import com.aliyun.oss.OSS;
-import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.model.GetObjectRequest;
 import com.gulimall.product.GulimallProductApplication;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import com.aliyun.oss.common.auth.*;
-import java.io.File;
 
 @SpringBootTest(classes = GulimallProductApplication.class)
 class GulimallProductApplicationTests {

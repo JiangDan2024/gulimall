@@ -10,7 +10,7 @@ import com.gulimall.product.service.ISpuImagesService;
  * 【请填写功能名称】Service业务层处理
  *
  * @author jdjdjd
- * @date 2026-09-16
+ * @date 2026-09-19
  */
 @Service
 public class SpuImagesServiceImpl extends ServiceImpl<SpuImagesMapper, SpuImages> implements ISpuImagesService {

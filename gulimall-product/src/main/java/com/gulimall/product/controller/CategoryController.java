@@ -2,17 +2,14 @@ package com.gulimall.product.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+
 import org.springframework.web.bind.annotation.*;
 import com.gulimall.common.annotation.Log;
 import com.gulimall.common.enums.BusinessType;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.gulimall.product.domain.Category;
 import com.gulimall.product.service.ICategoryService;
 import com.gulimall.common.core.controller.BaseController;
 import com.gulimall.common.core.domain.AjaxResult;
-import com.gulimall.common.core.page.TableDataInfo;
 
 
 /**
@@ -105,7 +102,7 @@ public class CategoryController extends BaseController
     @ResponseBody
     public AjaxResult editSave(@RequestBody Category category)
     {
-        return categoryService.updateById(category)
+        return categoryService.updateCascader(category)
                 ? AjaxResult.success()
                 : AjaxResult.error();
     }

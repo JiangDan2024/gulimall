@@ -12,7 +12,7 @@ import com.gulimall.common.core.domain.BaseEntity;
  * 【请填写功能名称】对象 pms_category_brand_relation
  *
  * @author jdjdjd
- * @date 2026-09-16
+ * @date 2026-09-19
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

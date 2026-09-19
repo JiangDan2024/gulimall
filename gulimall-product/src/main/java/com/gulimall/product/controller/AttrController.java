@@ -2,6 +2,9 @@ package com.gulimall.product.controller;
 
 import java.util.Arrays;
 import java.util.List;
+
+import com.gulimall.product.vo.AttrGroupCateVo;
+import com.gulimall.product.vo.AttrVo;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +33,7 @@ import com.gulimall.common.utils.poi.ExcelUtil;
  * 【请填写功能名称】Controller
  *
  * @author jdjdjd
- * @date 2026-09-16
+ * @date 2026-09-19
  */
 @RestController
 @RequestMapping("/product/attr")
@@ -38,6 +41,19 @@ public class AttrController extends BaseController
 {
     @Autowired
     private IAttrService attrService;
+
+    @GetMapping("/{type}/list")
+    public TableDataInfo baseList(@PathVariable("type") String type,Attr attr){
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        IPage<AttrGroupCateVo> result = attrService.baseList(attr, pageDomain, type);
+
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(200);
+        rspData.setMsg("查询成功");
+        rspData.setRows(result.getRecords());
+        rspData.setTotal(result.getTotal());
+        return rspData;
+    }
 
     /**
      * 查询【请填写功能名称】列表
@@ -79,7 +95,7 @@ public class AttrController extends BaseController
     @GetMapping("/info/{attrId}")
     public AjaxResult getInfo(@PathVariable("attrId") Long attrId)
     {
-        return success(attrService.getById(attrId));
+        return success(attrService.getAttr(attrId));
     }
 
     /**
@@ -87,10 +103,10 @@ public class AttrController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('product:attr:add')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
-    @PostMapping("/add")
-    public AjaxResult add(@RequestBody Attr attr)
+    @PostMapping("/save")
+    public AjaxResult add(@RequestBody AttrVo attr)
     {
-        return toAjax(attrService.save(attr));
+        return toAjax(attrService.saveAttr(attr));
     }
 
     /**
@@ -98,10 +114,10 @@ public class AttrController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('product:attr:edit')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
-    @PutMapping("/edit")
-    public AjaxResult edit(@RequestBody Attr attr)
+    @PutMapping("/update")
+    public AjaxResult edit(@RequestBody AttrVo attr)
     {
-        return toAjax(attrService.updateById(attr));
+        return toAjax(attrService.updateAttr(attr));
     }
 
     /**
@@ -109,9 +125,9 @@ public class AttrController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('product:attr:remove')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-    @DeleteMapping("/remove/{attrIds}")
-    public AjaxResult remove(@PathVariable Long[] attrIds)
+    @PostMapping("/delete")
+    public AjaxResult remove(@RequestBody List<Long> attrIds)
     {
-        return toAjax(attrService.removeByIds(Arrays.asList(attrIds)));
+        return toAjax(attrService.removeByIds(attrIds));
     }
 }

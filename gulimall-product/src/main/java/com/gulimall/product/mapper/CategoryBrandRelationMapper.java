@@ -2,13 +2,15 @@ package com.gulimall.product.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.gulimall.product.domain.CategoryBrandRelation;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 【请填写功能名称】Mapper接口
  *
  * @author jdjdjd
- * @date 2026-09-16
+ * @date 2026-09-19
  */
 public interface CategoryBrandRelationMapper extends BaseMapper<CategoryBrandRelation> {
+    void updateCategory(@Param("catId") Long catId,@Param("name") String name);
     // 单表 CRUD 由 BaseMapper 提供，如有复杂连表查询可在此处扩展
 }

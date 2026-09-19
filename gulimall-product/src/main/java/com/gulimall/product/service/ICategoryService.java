@@ -17,4 +17,8 @@ public interface ICategoryService extends IService<Category>
     List<Category> listWithTree();
 
     int removeMenusByIds(List<Long> ids);
+
+    Long[] findCategoryPath(Long catelogId);
+
+    boolean updateCascader(Category category);
 }

@@ -1,28 +1,11 @@
-package com.gulimall.product.domain;
+package com.gulimall.product.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import com.gulimall.common.annotation.Excel;
-import com.gulimall.common.core.domain.BaseEntity;
+import lombok.Data;
 
-/**
- * 【请填写功能名称】对象 pms_attr
- *
- * @author jdjdjd
- * @date 2026-09-19
- */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@TableName("pms_attr")
-public class Attr extends BaseEntity
-{
-private static final long serialVersionUID = 1L;
-
+public class AttrVo {
     /** 属性id */
-    @TableId(value = "attr_id", type = IdType.AUTO)
     private Long attrId;
 
     /** 属性名 */
@@ -61,4 +44,5 @@ private static final long serialVersionUID = 1L;
     @Excel(name = "快速展示【是否展示在介绍上；0-否 1-是】，在sku中仍然可以调整")
     private Long showDesc;
 
+    private Long attrGroupId;
 }

@@ -30,7 +30,7 @@ import com.gulimall.common.utils.poi.ExcelUtil;
  * 【请填写功能名称】Controller
  *
  * @author jdjdjd
- * @date 2026-09-16
+ * @date 2026-09-19
  */
 @RestController
 @RequestMapping("/product/spuInfo")
@@ -87,7 +87,7 @@ public class SpuInfoController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('product:spuInfo:add')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
-    @PostMapping("/add")
+    @PostMapping("/save")
     public AjaxResult add(@RequestBody SpuInfo spuInfo)
     {
         return toAjax(spuInfoService.save(spuInfo));
@@ -98,7 +98,7 @@ public class SpuInfoController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('product:spuInfo:edit')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
-    @PutMapping("/edit")
+    @PutMapping("/update")
     public AjaxResult edit(@RequestBody SpuInfo spuInfo)
     {
         return toAjax(spuInfoService.updateById(spuInfo));
@@ -109,9 +109,9 @@ public class SpuInfoController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('product:spuInfo:remove')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-    @DeleteMapping("/remove/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
+    @PostMapping("/delete")
+    public AjaxResult remove(@RequestBody List<Long> ids)
     {
-        return toAjax(spuInfoService.removeByIds(Arrays.asList(ids)));
+        return toAjax(spuInfoService.removeByIds(ids));
     }
 }

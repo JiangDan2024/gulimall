@@ -9,18 +9,18 @@ public class BaseEntity implements Serializable {
 
     /** 搜索值 */
     @TableField(exist = false)
-    private String searchValue;
+    private String key;
 
     /** 请求参数 */
     @TableField(exist = false)
     private Map<String, Object> params;
 
-    public String getSearchValue() {
-        return searchValue;
+    public String getKey() {
+        return key;
     }
 
-    public void setSearchValue(String searchValue) {
-        this.searchValue = searchValue;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public Map<String, Object> getParams() {

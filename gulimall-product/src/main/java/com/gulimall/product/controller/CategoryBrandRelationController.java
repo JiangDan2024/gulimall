@@ -1,17 +1,9 @@
 package com.gulimall.product.controller;
 
-import java.util.Arrays;
 import java.util.List;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -30,7 +22,7 @@ import com.gulimall.common.utils.poi.ExcelUtil;
  * 【请填写功能名称】Controller
  *
  * @author jdjdjd
- * @date 2026-09-16
+ * @date 2026-09-19
  */
 @RestController
 @RequestMapping("/product/categoryBrandRelation")
@@ -38,6 +30,11 @@ public class CategoryBrandRelationController extends BaseController
 {
     @Autowired
     private ICategoryBrandRelationService categoryBrandRelationService;
+
+    @GetMapping("/category/list")
+    public AjaxResult categoryList(@RequestParam("brandId") Long brandId){
+        return AjaxResult.success().put("data",categoryBrandRelationService.categoryList(brandId));
+    }
 
     /**
      * 查询【请填写功能名称】列表
@@ -87,10 +84,10 @@ public class CategoryBrandRelationController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('product:categoryBrandRelation:add')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
-    @PostMapping("/add")
+    @PostMapping("/save")
     public AjaxResult add(@RequestBody CategoryBrandRelation categoryBrandRelation)
     {
-        return toAjax(categoryBrandRelationService.save(categoryBrandRelation));
+        return toAjax(categoryBrandRelationService.cascaderSave(categoryBrandRelation));
     }
 
     /**
@@ -98,7 +95,7 @@ public class CategoryBrandRelationController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('product:categoryBrandRelation:edit')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
-    @PutMapping("/edit")
+    @PutMapping("/update")
     public AjaxResult edit(@RequestBody CategoryBrandRelation categoryBrandRelation)
     {
         return toAjax(categoryBrandRelationService.updateById(categoryBrandRelation));
@@ -109,9 +106,9 @@ public class CategoryBrandRelationController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('product:categoryBrandRelation:remove')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-    @DeleteMapping("/remove/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
+    @PostMapping("/delete")
+    public AjaxResult remove(@RequestBody List<Long> ids)
     {
-        return toAjax(categoryBrandRelationService.removeByIds(Arrays.asList(ids)));
+        return toAjax(categoryBrandRelationService.removeByIds(ids));
     }
 }

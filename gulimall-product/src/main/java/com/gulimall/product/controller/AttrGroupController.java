@@ -1,20 +1,22 @@
 package com.gulimall.product.controller;
 
-import java.util.Arrays;
 import java.util.List;
+
+import com.gulimall.product.domain.Attr;
+import com.gulimall.product.domain.AttrAttrgroupRelation;
+import com.gulimall.product.service.IAttrAttrgroupRelationService;
+import com.gulimall.product.service.IAttrService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gulimall.common.annotation.Log;
 import com.gulimall.common.core.controller.BaseController;
 import com.gulimall.common.core.domain.AjaxResult;
@@ -39,6 +41,35 @@ public class AttrGroupController extends BaseController
     @Autowired
     private IAttrGroupService attrGroupService;
 
+    @Autowired
+    IAttrService attrService;
+    @Autowired
+    private IAttrAttrgroupRelationService iAttrAttrgroupRelationService;
+
+
+    //分组与属性的关联查询，当前分组下关联的所有属性
+    @GetMapping("/{groupId}/attr/relation")
+    public AjaxResult attrRelation(@PathVariable("groupId") Long groupId){
+        return AjaxResult.success().put("data",attrService.queryGroupRelation(groupId));
+    }
+    //查询当前分组能够新增的属性关联，应满足：在同一分类下、且未被当前分类下其他分组关联
+    @GetMapping("/{groupId}/noattr/relation")
+    public TableDataInfo noAttrRelation(@PathVariable("groupId") Long groupId,AttrGroup attrGroup){
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        IPage<Attr> result = attrGroupService.noAttrRelation(pageDomain, attrGroup,groupId);
+
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(200);
+        rspData.setMsg("查询成功");
+        rspData.setRows(result.getRecords());
+        rspData.setTotal(result.getTotal());
+        return rspData;
+    }
+    //新增分组和属性的关联
+    @PostMapping("/attr/relation")
+    public AjaxResult addRelation(@RequestBody List<AttrAttrgroupRelation> relationList){
+        return toAjax(iAttrAttrgroupRelationService.addRelation(relationList));
+    }
     /**
      * 查询【请填写功能名称】列表
      */
@@ -47,9 +78,7 @@ public class AttrGroupController extends BaseController
     public TableDataInfo list(AttrGroup attrGroup)
     {
         PageDomain pageDomain = TableSupport.buildPageRequest();
-        Page<AttrGroup> page = new Page<>(pageDomain.getPageNum(), pageDomain.getPageSize());
-        QueryWrapper<AttrGroup> wrapper = new QueryWrapper<>(attrGroup);
-        IPage<AttrGroup> result = attrGroupService.page(page, wrapper);
+        IPage<AttrGroup> result = attrGroupService.queryPage(pageDomain, attrGroup);
 
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(200);
@@ -79,7 +108,7 @@ public class AttrGroupController extends BaseController
     @GetMapping("/info/{attrGroupId}")
     public AjaxResult getInfo(@PathVariable("attrGroupId") Long attrGroupId)
     {
-        return success(attrGroupService.getById(attrGroupId));
+        return success(attrGroupService.getInfo(attrGroupId));
     }
 
     /**
@@ -104,14 +133,18 @@ public class AttrGroupController extends BaseController
         return toAjax(attrGroupService.updateById(attrGroup));
     }
 
+    @PostMapping("/attr/relation/delete")
+    public AjaxResult relationDelete(@RequestBody List<AttrAttrgroupRelation> list){
+        return toAjax(iAttrAttrgroupRelationService.relationDelete(list));
+    }
     /**
      * 删除【请填写功能名称】
      */
     // @PreAuthorize("@ss.hasPermi('product:attrGroup:remove')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-    @DeleteMapping("/remove/{attrGroupIds}")
-    public AjaxResult remove(@PathVariable Long[] attrGroupIds)
+    @PostMapping("/remove")
+    public AjaxResult remove(@RequestBody List<Long> attrGroupIds)
     {
-        return toAjax(attrGroupService.removeByIds(Arrays.asList(attrGroupIds)));
+        return toAjax(attrGroupService.removeByIds(attrGroupIds));
     }
 }

@@ -2,11 +2,16 @@ package com.gulimall.product.service.impl;
 
 import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
 
+import com.gulimall.product.service.ICategoryBrandRelationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.gulimall.product.mapper.CategoryMapper;
 import com.gulimall.product.domain.Category;
 import com.gulimall.product.service.ICategoryService;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +25,8 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper,Category> implements ICategoryService
 {
 
+    @Autowired
+    ICategoryBrandRelationService categoryBrandRelationService;
 //    @Override
 //    public List<Category> listWithTree() {
 //        //查询所有数据
@@ -73,6 +80,35 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper,Category> im
     public int removeMenusByIds(List<Long> ids) {
         //todo 删除前先检查id是否有其他正在使用的地方
         return baseMapper.deleteByIds(ids);
+    }
+
+    @Override
+    public Long[] findCategoryPath(Long catelogId) {
+        List<Long> paths = new ArrayList<>();
+        //递归查找父id
+        List<Long> parentPath = findParentPath(catelogId, paths);
+        Collections.reverse(parentPath);
+        return parentPath.toArray(new Long[parentPath.size()]);
+    }
+
+    @Transactional
+    @Override
+    public boolean updateCascader(Category category) {
+        this.updateById(category);
+        categoryBrandRelationService.updateCategory(category.getCatId(),category.getName());
+        return true;
+    }
+
+    private List<Long> findParentPath(Long categoryId,List<Long> paths) {
+        paths.add(categoryId);
+        Category byId = this.getById(categoryId);
+        if (byId == null) {
+            return paths;
+        }
+        if(byId.getParentCid()!=0){
+            findParentPath(byId.getParentCid(),paths);
+        }
+        return paths;
     }
 
     private List<Category> getChildren(Category root, List<Category> all) {

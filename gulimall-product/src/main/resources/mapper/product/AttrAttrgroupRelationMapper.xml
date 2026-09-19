@@ -4,4 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gulimall.product.mapper.AttrAttrgroupRelationMapper">
 
+    <delete id="relationDelete">
+        delete from `pms_attr_attrgroup_relation` where
+        <foreach collection="list" item="item" separator=" OR ">
+            (attr_id = #{item.attrId} AND attr_group_id = #{item.attrGroupId})
+        </foreach>
+    </delete>
 </mapper>

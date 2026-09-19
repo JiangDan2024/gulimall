@@ -30,7 +30,7 @@ import com.gulimall.common.utils.poi.ExcelUtil;
  * 【请填写功能名称】Controller
  *
  * @author jdjdjd
- * @date 2026-09-16
+ * @date 2026-09-19
  */
 @RestController
 @RequestMapping("/product/skuInfo")
@@ -87,7 +87,7 @@ public class SkuInfoController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('product:skuInfo:add')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
-    @PostMapping("/add")
+    @PostMapping("/save")
     public AjaxResult add(@RequestBody SkuInfo skuInfo)
     {
         return toAjax(skuInfoService.save(skuInfo));
@@ -98,7 +98,7 @@ public class SkuInfoController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('product:skuInfo:edit')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
-    @PutMapping("/edit")
+    @PutMapping("/update")
     public AjaxResult edit(@RequestBody SkuInfo skuInfo)
     {
         return toAjax(skuInfoService.updateById(skuInfo));
@@ -109,9 +109,9 @@ public class SkuInfoController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('product:skuInfo:remove')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-    @DeleteMapping("/remove/{skuIds}")
-    public AjaxResult remove(@PathVariable Long[] skuIds)
+    @PostMapping("/delete")
+    public AjaxResult remove(@RequestBody List<Long> skuIds)
     {
-        return toAjax(skuInfoService.removeByIds(Arrays.asList(skuIds)));
+        return toAjax(skuInfoService.removeByIds(skuIds));
     }
 }

@@ -1,6 +1,7 @@
 package com.gulimall.product.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.gulimall.common.annotation.Excel;
 import lombok.Getter;
 import lombok.Setter;
@@ -58,6 +59,7 @@ public class Category extends BaseEntity
         @Excel(name = "商品数量")
     private Long productCount;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
         @TableField(exist = false)
     private List<Category> children;
 }

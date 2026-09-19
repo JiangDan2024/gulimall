@@ -1,6 +1,5 @@
 package com.gulimall.product.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -13,14 +12,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gulimall.common.annotation.Log;
 import com.gulimall.common.core.controller.BaseController;
 import com.gulimall.common.core.domain.AjaxResult;
@@ -53,9 +50,7 @@ public class BrandController extends BaseController
     public TableDataInfo list(Brand brand)
     {
         PageDomain pageDomain = TableSupport.buildPageRequest();
-        Page<Brand> page = new Page<>(pageDomain.getPageNum(), pageDomain.getPageSize());
-        QueryWrapper<Brand> wrapper = new QueryWrapper<>(brand);
-        IPage<Brand> result = brandService.page(page, wrapper);
+        IPage<Brand> result = brandService.queryPage(pageDomain, brand);
 
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(200);
@@ -115,7 +110,7 @@ public class BrandController extends BaseController
     @PutMapping("/edit")
     public AjaxResult edit(@Validated(UpdateGroup.class) @RequestBody Brand brand)
     {
-        return toAjax(brandService.updateById(brand));
+        return toAjax(brandService.updateCascader(brand));
     }
 
     @Log(title = "更新展示状态", businessType = BusinessType.UPDATE)
@@ -130,9 +125,9 @@ public class BrandController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('product:brand:remove')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-    @DeleteMapping("/remove/{brandIds}")
-    public AjaxResult remove(@PathVariable Long[] brandIds)
+    @PostMapping("/remove")
+    public AjaxResult remove(@RequestBody List<Long> brandIds)
     {
-        return toAjax(brandService.removeByIds(Arrays.asList(brandIds)));
+        return toAjax(brandService.removeByIds(brandIds));
     }
 }

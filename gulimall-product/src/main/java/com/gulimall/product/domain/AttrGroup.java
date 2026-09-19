@@ -1,12 +1,15 @@
 package com.gulimall.product.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import com.gulimall.common.annotation.Excel;
 import com.gulimall.common.core.domain.BaseEntity;
+
+import java.util.List;
 
 /**
  * 【请填写功能名称】对象 pms_attr_group
@@ -44,5 +47,8 @@ private static final long serialVersionUID = 1L;
     /** 所属分类id */
     @Excel(name = "所属分类id")
     private Long catelogId;
+
+    @TableField(exist = false)
+    private Long[] catelogPath;
 
 }

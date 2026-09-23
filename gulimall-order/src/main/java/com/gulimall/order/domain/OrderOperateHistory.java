@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 import com.gulimall.common.annotation.Excel;
 import com.gulimall.common.core.domain.BaseEntity;
 
+import java.util.Date;
+
 /**
  * 【请填写功能名称】对象 oms_order_operate_history
  *

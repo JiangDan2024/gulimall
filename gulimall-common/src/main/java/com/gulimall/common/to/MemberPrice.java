@@ -1,6 +1,5 @@
 package com.gulimall.common.to;
 
-import com.gulimall.common.core.domain.BaseEntity;
 import lombok.Data;
 
 import java.io.Serializable;

@@ -3,6 +3,7 @@ package com.gulimall.product.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import com.gulimall.product.domain.ProductAttrValue;
 import com.gulimall.product.vo.AttrGroupCateVo;
 import com.gulimall.product.vo.AttrVo;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,6 +42,17 @@ public class AttrController extends BaseController
 {
     @Autowired
     private IAttrService attrService;
+
+    @PostMapping("/update/{spuId}")
+    public AjaxResult updateAttrValue(@PathVariable("spuId") Long spuId, @RequestBody List<ProductAttrValue> attrValues){
+        return toAjax(attrService.updateAttrValue(spuId,attrValues));
+    }
+
+    @GetMapping("/base/listforspu/{spuId}")
+    public AjaxResult listforspu(@PathVariable("spuId") Long spuId)
+    {
+        return AjaxResult.success().put("data",attrService.listforspu(spuId));
+    }
 
     @GetMapping("/{type}/list")
     public TableDataInfo baseList(@PathVariable("type") String type,Attr attr){

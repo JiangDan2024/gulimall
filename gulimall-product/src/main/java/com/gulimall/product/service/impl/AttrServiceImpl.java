@@ -9,22 +9,19 @@ import com.gulimall.common.constant.ProductConstant;
 import com.gulimall.common.core.page.PageDomain;
 import com.gulimall.common.utils.StringUtils;
 import com.gulimall.common.utils.bean.BeanUtils;
-import com.gulimall.product.domain.AttrAttrgroupRelation;
-import com.gulimall.product.domain.AttrGroup;
-import com.gulimall.product.domain.Category;
+import com.gulimall.product.domain.*;
 import com.gulimall.product.mapper.AttrAttrgroupRelationMapper;
 import com.gulimall.product.mapper.AttrGroupMapper;
 import com.gulimall.product.mapper.CategoryMapper;
 import com.gulimall.product.service.ICategoryService;
+import com.gulimall.product.service.IProductAttrValueService;
 import com.gulimall.product.vo.AttrGroupCateVo;
 import com.gulimall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.gulimall.product.mapper.AttrMapper;
-import com.gulimall.product.domain.Attr;
 import com.gulimall.product.service.IAttrService;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,6 +45,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements IA
 
     @Autowired
     ICategoryService  categoryService;
+
+    @Autowired
+    IProductAttrValueService productAttrValueService;
     @Transactional
     @Override
     public int saveAttr(AttrVo attrVo) {
@@ -160,6 +160,31 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements IA
             return this.listByIds(attrIds);
         }
         return null;
+    }
+
+    @Override
+    public List<ProductAttrValue> listforspu(Long spuId) {
+        QueryWrapper<ProductAttrValue> wrapper = new QueryWrapper<ProductAttrValue>();
+        if(spuId!=null){
+            wrapper.eq("spu_id",spuId);
+        }
+        return productAttrValueService.list(wrapper);
+    }
+
+    @Override
+    public int updateAttrValue(Long spuId, List<ProductAttrValue> attrValues) {
+        //删除旧数据
+        QueryWrapper<ProductAttrValue> wrapper = new QueryWrapper<>();
+        if(spuId!=null){
+            wrapper.eq("spu_id",spuId);
+        }
+        productAttrValueService.remove(wrapper);
+        //新增新数据
+        attrValues.forEach(attr -> {
+            attr.setSpuId(spuId);
+        });
+        productAttrValueService.saveBatch(attrValues);
+        return 1;
     }
     // 单表 CRUD 由 ServiceImpl 提供，如有自定义业务方法可在此处扩展
 }

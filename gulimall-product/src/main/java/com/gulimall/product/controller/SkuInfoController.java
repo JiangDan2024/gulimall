@@ -1,15 +1,11 @@
 package com.gulimall.product.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -31,7 +27,7 @@ import com.gulimall.common.utils.poi.ExcelUtil;
  * @date 2026-09-19
  */
 @RestController
-@RequestMapping("/product/skuInfo")
+@RequestMapping("/product/skuinfo")
 public class SkuInfoController extends BaseController
 {
     @Autowired
@@ -42,12 +38,9 @@ public class SkuInfoController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('product:skuInfo:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SkuInfo skuInfo)
+    public TableDataInfo list(@RequestParam Map<String,Object> params)
     {
-        PageDomain pageDomain = TableSupport.buildPageRequest();
-        Page<SkuInfo> page = new Page<>(pageDomain.getPageNum(), pageDomain.getPageSize());
-        QueryWrapper<SkuInfo> wrapper = new QueryWrapper<>(skuInfo);
-        IPage<SkuInfo> result = skuInfoService.page(page, wrapper);
+        IPage<SkuInfo> result = skuInfoService.pageQuery(params);
 
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(200);

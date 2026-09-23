@@ -36,6 +36,11 @@ public class CategoryBrandRelationController extends BaseController
         return AjaxResult.success().put("data",categoryBrandRelationService.categoryList(brandId));
     }
 
+    @GetMapping("/brands/list")
+    public AjaxResult brandList(@RequestParam("catId") Long catId){
+        return AjaxResult.success().put("data",categoryBrandRelationService.brandList(catId));
+    }
+
     /**
      * 查询【请填写功能名称】列表
      */

@@ -1,17 +1,14 @@
 package com.gulimall.order.mapper;
 
-import com.gulimall.order.domain.OrderOperateHistory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+import com.gulimall.order.domain.OrderOperateHistory;
 
 /**
  * 【请填写功能名称】Mapper接口
- * 
- * @author jiangdan
- * @date 2026-09-12
+ *
+ * @author jdjdjd
+ * @date 2026-09-22
  */
-@Mapper
-public interface OrderOperateHistoryMapper extends BaseMapper<OrderOperateHistory>
-{
-
+public interface OrderOperateHistoryMapper extends BaseMapper<OrderOperateHistory> {
+    // 单表 CRUD 由 BaseMapper 提供，如有复杂连表查询可在此处扩展
 }

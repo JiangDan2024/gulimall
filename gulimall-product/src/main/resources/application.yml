@@ -5,8 +5,8 @@ spring:
   cloud:
     nacos:
       # 全局地址和账号，discovery 和 config 都继承
-#      server-addr: 10.173.1.224:8848
-      server-addr: 192.168.123.84:8848
+      server-addr: 10.201.215.224:8848
+#      server-addr: 192.168.123.84:8848
       username: nacos
       password: nacos
 
@@ -15,7 +15,8 @@ spring:
       config:
         namespace: 94b415d7-4269-4e8a-a8bc-e36e817c42d4
         file-extension: yaml
-
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
   # 用 import 替代老版本的 ext-config
   config:
     import:

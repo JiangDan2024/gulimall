@@ -30,10 +30,10 @@ import com.gulimall.common.utils.poi.ExcelUtil;
  * 【请填写功能名称】Controller
  *
  * @author jdjdjd
- * @date 2026-09-16
+ * @date 2026-09-22
  */
 @RestController
-@RequestMapping("/ware/wareSku")
+@RequestMapping("/ware/waresku")
 public class WareSkuController extends BaseController
 {
     @Autowired
@@ -49,7 +49,8 @@ public class WareSkuController extends BaseController
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Page<WareSku> page = new Page<>(pageDomain.getPageNum(), pageDomain.getPageSize());
         QueryWrapper<WareSku> wrapper = new QueryWrapper<>(wareSku);
-        IPage<WareSku> result = wareSkuService.page(page, wrapper);
+
+        IPage<WareSku> result = wareSkuService.page(page,wrapper);
 
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(200);
@@ -87,7 +88,7 @@ public class WareSkuController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('ware:wareSku:add')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
-    @PostMapping("/add")
+    @PostMapping("/save")
     public AjaxResult add(@RequestBody WareSku wareSku)
     {
         return toAjax(wareSkuService.save(wareSku));
@@ -98,7 +99,7 @@ public class WareSkuController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('ware:wareSku:edit')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
-    @PutMapping("/edit")
+    @PutMapping("/update")
     public AjaxResult edit(@RequestBody WareSku wareSku)
     {
         return toAjax(wareSkuService.updateById(wareSku));
@@ -109,9 +110,9 @@ public class WareSkuController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('ware:wareSku:remove')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-    @DeleteMapping("/remove/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
+    @PostMapping("/delete")
+    public AjaxResult remove(@RequestBody List<Long> ids)
     {
-        return toAjax(wareSkuService.removeByIds(Arrays.asList(ids)));
+        return toAjax(wareSkuService.removeByIds(ids));
     }
 }

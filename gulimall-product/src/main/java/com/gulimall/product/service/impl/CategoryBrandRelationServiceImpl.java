@@ -7,12 +7,14 @@ import com.gulimall.product.domain.Brand;
 import com.gulimall.product.domain.Category;
 import com.gulimall.product.mapper.BrandMapper;
 import com.gulimall.product.mapper.CategoryMapper;
+import com.gulimall.product.vo.BrandVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.gulimall.product.mapper.CategoryBrandRelationMapper;
 import com.gulimall.product.domain.CategoryBrandRelation;
 import com.gulimall.product.service.ICategoryBrandRelationService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,6 +62,22 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
     @Override
     public void updateCategory(Long catId, String name) {
         categoryBrandRelationMapper.updateCategory(catId,name);
+    }
+
+    @Override
+    public List<BrandVo> brandList(Long catId) {
+        List<CategoryBrandRelation> brandIds = this.list(new QueryWrapper<CategoryBrandRelation>().eq("catelog_id", catId));
+        List<Long> brandList = brandIds.stream().map(CategoryBrandRelation::getBrandId).toList();
+        //为了可复用，这里把brand查出
+        List<Brand> brands = brandMapper.selectByIds(brandList);
+        List<BrandVo> brandVoList = new ArrayList<>();
+        brands.forEach(brand -> {
+            BrandVo brandVo = new BrandVo();
+            brandVo.setBrandName(brand.getName());
+            brandVo.setBrandId(brand.getBrandId());
+            brandVoList.add(brandVo);
+        });
+        return brandVoList;
     }
     // 单表 CRUD 由 ServiceImpl 提供，如有自定义业务方法可在此处扩展
 }

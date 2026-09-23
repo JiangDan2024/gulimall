@@ -30,10 +30,10 @@ import com.gulimall.common.utils.poi.ExcelUtil;
  * 【请填写功能名称】Controller
  *
  * @author jdjdjd
- * @date 2026-09-16
+ * @date 2026-09-22
  */
 @RestController
-@RequestMapping("/ware/wareInfo")
+@RequestMapping("/ware/wareinfo")
 public class WareInfoController extends BaseController
 {
     @Autowired
@@ -46,10 +46,7 @@ public class WareInfoController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(WareInfo wareInfo)
     {
-        PageDomain pageDomain = TableSupport.buildPageRequest();
-        Page<WareInfo> page = new Page<>(pageDomain.getPageNum(), pageDomain.getPageSize());
-        QueryWrapper<WareInfo> wrapper = new QueryWrapper<>(wareInfo);
-        IPage<WareInfo> result = wareInfoService.page(page, wrapper);
+        IPage<WareInfo> result = wareInfoService.pageQuery(wareInfo);
 
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(200);
@@ -87,7 +84,7 @@ public class WareInfoController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('ware:wareInfo:add')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
-    @PostMapping("/add")
+    @PostMapping("/save")
     public AjaxResult add(@RequestBody WareInfo wareInfo)
     {
         return toAjax(wareInfoService.save(wareInfo));
@@ -98,7 +95,7 @@ public class WareInfoController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('ware:wareInfo:edit')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
-    @PutMapping("/edit")
+    @PutMapping("/update")
     public AjaxResult edit(@RequestBody WareInfo wareInfo)
     {
         return toAjax(wareInfoService.updateById(wareInfo));
@@ -109,9 +106,9 @@ public class WareInfoController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('ware:wareInfo:remove')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-    @DeleteMapping("/remove/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
+    @PostMapping("/delete")
+    public AjaxResult remove(@RequestBody List<Long> ids)
     {
-        return toAjax(wareInfoService.removeByIds(Arrays.asList(ids)));
+        return toAjax(wareInfoService.removeByIds(ids));
     }
 }

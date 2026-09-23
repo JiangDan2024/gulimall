@@ -8,69 +8,74 @@ import lombok.EqualsAndHashCode;
 import com.gulimall.common.annotation.Excel;
 import com.gulimall.common.core.domain.BaseEntity;
 
+import java.util.Date;
+
 /**
  * 【请填写功能名称】对象 wms_ware_order_task
  *
  * @author jdjdjd
- * @date 2026-09-16
+ * @date 2026-09-22
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-@TableName("wms_ware_order_task")
-public class WareOrderTask extends BaseEntity
-{
-private static final long serialVersionUID = 1L;
+        @Data
+        @EqualsAndHashCode(callSuper = true)
+        @TableName("wms_ware_order_task")
+        public class WareOrderTask extends BaseEntity
+        {
+        private static final long serialVersionUID = 1L;
 
-    /** id */
-    @TableId(value = "id", type = IdType.AUTO)
+            /** id */
+        @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    /** order_id */
-    @Excel(name = "order_id")
+            /** order_id */
+            @Excel(name = "order_id")
     private Long orderId;
 
-    /** order_sn */
-    @Excel(name = "order_sn")
+            /** order_sn */
+            @Excel(name = "order_sn")
     private String orderSn;
 
-    /** 收货人 */
-    @Excel(name = "收货人")
+            /** 收货人 */
+            @Excel(name = "收货人")
     private String consignee;
 
-    /** 收货人电话 */
-    @Excel(name = "收货人电话")
+            /** 收货人电话 */
+            @Excel(name = "收货人电话")
     private String consigneeTel;
 
-    /** 配送地址 */
-    @Excel(name = "配送地址")
+            /** 配送地址 */
+            @Excel(name = "配送地址")
     private String deliveryAddress;
 
-    /** 订单备注 */
-    @Excel(name = "订单备注")
+            /** 订单备注 */
+            @Excel(name = "订单备注")
     private String orderComment;
 
-    /** 付款方式【 1:在线付款 2:货到付款】 */
-    @Excel(name = "付款方式【 1:在线付款 2:货到付款】")
+            /** 付款方式【 1:在线付款 2:货到付款】 */
+            @Excel(name = "付款方式【 1:在线付款 2:货到付款】")
     private Integer paymentWay;
 
-    /** 任务状态 */
-    @Excel(name = "任务状态")
+            /** 任务状态 */
+            @Excel(name = "任务状态")
     private Long taskStatus;
 
-    /** 订单描述 */
-    @Excel(name = "订单描述")
+            /** 订单描述 */
+            @Excel(name = "订单描述")
     private String orderBody;
 
-    /** 物流单号 */
-    @Excel(name = "物流单号")
+            /** 物流单号 */
+            @Excel(name = "物流单号")
     private String trackingNo;
 
-    /** 仓库id */
-    @Excel(name = "仓库id")
+            /** create_time */
+    private Date createTime;
+
+            /** 仓库id */
+            @Excel(name = "仓库id")
     private Long wareId;
 
-    /** 工作单备注 */
-    @Excel(name = "工作单备注")
+            /** 工作单备注 */
+            @Excel(name = "工作单备注")
     private String taskComment;
 
-}
+        }

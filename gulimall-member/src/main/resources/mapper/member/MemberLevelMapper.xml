@@ -4,22 +4,4 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gulimall.member.mapper.MemberLevelMapper">
 
-    <resultMap type="com.gulimall.member.domain.MemberLevel" id="MemberLevelResult">
-            <result property="id" column="id" />
-            <result property="name" column="name" />
-            <result property="growthPoint" column="growth_point" />
-            <result property="defaultStatus" column="default_status" />
-            <result property="freeFreightPoint" column="free_freight_point" />
-            <result property="commentGrowthPoint" column="comment_growth_point" />
-            <result property="priviledgeFreeFreight" column="priviledge_free_freight" />
-            <result property="priviledgeMemberPrice" column="priviledge_member_price" />
-            <result property="priviledgeBirthday" column="priviledge_birthday" />
-            <result property="note" column="note" />
-    </resultMap>
-
-    <!-- ============================================================ -->
-    <!-- 基础 CRUD 全部由 MyBatis-Plus 的 BaseMapper 提供，无需在此实现 -->
-    <!-- 只有自定义的多表查询、复杂统计等才需要在这里编写 SQL            -->
-    <!-- ============================================================ -->
-
 </mapper>

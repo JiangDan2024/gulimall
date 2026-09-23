@@ -4,23 +4,4 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gulimall.order.mapper.PaymentInfoMapper">
 
-    <resultMap type="com.gulimall.order.domain.PaymentInfo" id="PaymentInfoResult">
-            <result property="id" column="id" />
-            <result property="orderSn" column="order_sn" />
-            <result property="orderId" column="order_id" />
-            <result property="alipayTradeNo" column="alipay_trade_no" />
-            <result property="totalAmount" column="total_amount" />
-            <result property="subject" column="subject" />
-            <result property="paymentStatus" column="payment_status" />
-            <result property="createTime" column="create_time" />
-            <result property="confirmTime" column="confirm_time" />
-            <result property="callbackContent" column="callback_content" />
-            <result property="callbackTime" column="callback_time" />
-    </resultMap>
-
-    <!-- ============================================================ -->
-    <!-- 基础 CRUD 全部由 MyBatis-Plus 的 BaseMapper 提供，无需在此实现 -->
-    <!-- 只有自定义的多表查询、复杂统计等才需要在这里编写 SQL            -->
-    <!-- ============================================================ -->
-
 </mapper>

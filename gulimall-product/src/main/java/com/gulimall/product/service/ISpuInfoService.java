@@ -1,7 +1,11 @@
 package com.gulimall.product.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.spring.service.IService;
 import com.gulimall.product.domain.SpuInfo;
+import com.gulimall.product.vo.SpuSaveVo;
+
+import java.util.Map;
 
 /**
  * 【请填写功能名称】Service接口
@@ -10,5 +14,10 @@ import com.gulimall.product.domain.SpuInfo;
  * @date 2026-09-19
  */
 public interface ISpuInfoService extends IService<SpuInfo> {
+    int saveSpuInfo(SpuSaveVo spuSaveVo);
+
+    void saveBaseSpuInfo(SpuInfo spuInfo);
+
+    IPage<SpuInfo> pageQuery(Map<String, Object> params);
     // 单表 CRUD 由 IService 提供，如有自定义业务方法可在此处扩展
 }

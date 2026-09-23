@@ -1,15 +1,14 @@
 package com.gulimall.order.service;
 
-import com.gulimall.order.domain.OrderItem;
 import com.baomidou.mybatisplus.spring.service.IService;
+import com.gulimall.order.domain.OrderItem;
 
 /**
  * 【请填写功能名称】Service接口
- * 
- * @author jiangdan
- * @date 2026-09-12
+ *
+ * @author jdjdjd
+ * @date 2026-09-22
  */
-public interface IOrderItemService extends IService<OrderItem>
-{
-
+public interface IOrderItemService extends IService<OrderItem> {
+    // 单表 CRUD 由 IService 提供，如有自定义业务方法可在此处扩展
 }

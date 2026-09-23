@@ -4,32 +4,4 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gulimall.coupon.mapper.CouponMapper">
 
-    <resultMap type="com.gulimall.coupon.domain.Coupon" id="CouponResult">
-            <result property="id" column="id" />
-            <result property="couponType" column="coupon_type" />
-            <result property="couponImg" column="coupon_img" />
-            <result property="couponName" column="coupon_name" />
-            <result property="num" column="num" />
-            <result property="amount" column="amount" />
-            <result property="perLimit" column="per_limit" />
-            <result property="minPoint" column="min_point" />
-            <result property="startTime" column="start_time" />
-            <result property="endTime" column="end_time" />
-            <result property="useType" column="use_type" />
-            <result property="note" column="note" />
-            <result property="publishCount" column="publish_count" />
-            <result property="useCount" column="use_count" />
-            <result property="receiveCount" column="receive_count" />
-            <result property="enableStartTime" column="enable_start_time" />
-            <result property="enableEndTime" column="enable_end_time" />
-            <result property="code" column="code" />
-            <result property="memberLevel" column="member_level" />
-            <result property="publish" column="publish" />
-    </resultMap>
-
-    <!-- ============================================================ -->
-    <!-- 基础 CRUD 全部由 MyBatis-Plus 的 BaseMapper 提供，无需在此实现 -->
-    <!-- 只有自定义的多表查询、复杂统计等才需要在这里编写 SQL            -->
-    <!-- ============================================================ -->
-
 </mapper>

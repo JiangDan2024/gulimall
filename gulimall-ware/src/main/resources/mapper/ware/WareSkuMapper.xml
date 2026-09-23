@@ -4,4 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gulimall.ware.mapper.WareSkuMapper">
 
+    <update id="updateFinishedStock">
+        update `wms_ware_sku` set stock = stock+#{skuNum} where sku_id = #{skuId} and ware_id = #{wareId}
+    </update>
 </mapper>

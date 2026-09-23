@@ -10,5 +10,6 @@ import com.gulimall.product.domain.SpuInfoDesc;
  * @date 2026-09-19
  */
 public interface ISpuInfoDescService extends IService<SpuInfoDesc> {
+    void saveSpuInfoDesc(SpuInfoDesc spuInfoDesc);
     // 单表 CRUD 由 IService 提供，如有自定义业务方法可在此处扩展
 }

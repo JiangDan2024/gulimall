@@ -6,6 +6,8 @@ import com.gulimall.product.mapper.SkuImagesMapper;
 import com.gulimall.product.domain.SkuImages;
 import com.gulimall.product.service.ISkuImagesService;
 
+import java.util.List;
+
 /**
  * 【请填写功能名称】Service业务层处理
  *
@@ -14,5 +16,11 @@ import com.gulimall.product.service.ISkuImagesService;
  */
 @Service
 public class SkuImagesServiceImpl extends ServiceImpl<SkuImagesMapper, SkuImages> implements ISkuImagesService {
+    @Override
+    public void saveSkuImages(List<SkuImages> skuImagesList) {
+        if (skuImagesList!=null&&skuImagesList.size()>0){
+            this.baseMapper.insert(skuImagesList);
+        }
+    }
     // 单表 CRUD 由 ServiceImpl 提供，如有自定义业务方法可在此处扩展
 }

@@ -12,33 +12,33 @@ import com.gulimall.common.core.domain.BaseEntity;
  * 【请填写功能名称】对象 wms_ware_order_task_detail
  *
  * @author jdjdjd
- * @date 2026-09-16
+ * @date 2026-09-22
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-@TableName("wms_ware_order_task_detail")
-public class WareOrderTaskDetail extends BaseEntity
-{
-private static final long serialVersionUID = 1L;
+        @Data
+        @EqualsAndHashCode(callSuper = true)
+        @TableName("wms_ware_order_task_detail")
+        public class WareOrderTaskDetail extends BaseEntity
+        {
+        private static final long serialVersionUID = 1L;
 
-    /** id */
-    @TableId(value = "id", type = IdType.AUTO)
+            /** id */
+        @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    /** sku_id */
-    @Excel(name = "sku_id")
+            /** sku_id */
+            @Excel(name = "sku_id")
     private Long skuId;
 
-    /** sku_name */
-    @Excel(name = "sku_name")
+            /** sku_name */
+            @Excel(name = "sku_name")
     private String skuName;
 
-    /** 购买个数 */
-    @Excel(name = "购买个数")
+            /** 购买个数 */
+            @Excel(name = "购买个数")
     private Long skuNum;
 
-    /** 工作单id */
-    @Excel(name = "工作单id")
+            /** 工作单id */
+            @Excel(name = "工作单id")
     private Long taskId;
 
-}
+        }

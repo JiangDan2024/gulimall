@@ -3,6 +3,8 @@ package com.gulimall.product.service;
 import com.baomidou.mybatisplus.spring.service.IService;
 import com.gulimall.product.domain.SpuImages;
 
+import java.util.List;
+
 /**
  * 【请填写功能名称】Service接口
  *
@@ -10,5 +12,6 @@ import com.gulimall.product.domain.SpuImages;
  * @date 2026-09-19
  */
 public interface ISpuImagesService extends IService<SpuImages> {
+    void saveSpuInfoImages(List<SpuImages> spuImagesList);
     // 单表 CRUD 由 IService 提供，如有自定义业务方法可在此处扩展
 }

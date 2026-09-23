@@ -1,115 +1,117 @@
 package com.gulimall.coupon.controller;
 
+import java.util.Arrays;
 import java.util.List;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import com.gulimall.common.annotation.Log;
-import com.gulimall.common.enums.BusinessType;
+import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.gulimall.coupon.domain.HomeSubjectSpu;
-import com.gulimall.coupon.service.IHomeSubjectSpuService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gulimall.common.annotation.Log;
 import com.gulimall.common.core.controller.BaseController;
 import com.gulimall.common.core.domain.AjaxResult;
+import com.gulimall.common.core.page.PageDomain;
 import com.gulimall.common.core.page.TableDataInfo;
-
+import com.gulimall.common.core.page.TableSupport;
+import com.gulimall.common.enums.BusinessType;
+import com.gulimall.coupon.domain.HomeSubjectSpu;
+import com.gulimall.coupon.service.IHomeSubjectSpuService;
+import com.gulimall.common.utils.poi.ExcelUtil;
 
 /**
  * 【请填写功能名称】Controller
  *
- * @author jiangdan
- * @date 2026-09-12
+ * @author jdjdjd
+ * @date 2026-09-22
  */
-@Controller
-@RequestMapping("/coupon/smsHomeSubjectSpu")
+@RestController
+@RequestMapping("/coupon/homeSubjectSpu")
 public class HomeSubjectSpuController extends BaseController
 {
-    private String prefix = "coupon/smsHomeSubjectSpu";
-
     @Autowired
     private IHomeSubjectSpuService homeSubjectSpuService;
 
-    @GetMapping()
-    public String spu()
+    /**
+     * 查询【请填写功能名称】列表
+     */
+    // @PreAuthorize("@ss.hasPermi('coupon:homeSubjectSpu:list')")
+    @GetMapping("/list")
+    public TableDataInfo list(HomeSubjectSpu homeSubjectSpu)
     {
-        return prefix + "/spu";
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Page<HomeSubjectSpu> page = new Page<>(pageDomain.getPageNum(), pageDomain.getPageSize());
+        QueryWrapper<HomeSubjectSpu> wrapper = new QueryWrapper<>(homeSubjectSpu);
+        IPage<HomeSubjectSpu> result = homeSubjectSpuService.page(page, wrapper);
+
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(200);
+        rspData.setMsg("查询成功");
+        rspData.setRows(result.getRecords());
+        rspData.setTotal(result.getTotal());
+        return rspData;
     }
 
-        /**
-         * 查询【请填写功能名称】列表
-         */
-        @GetMapping("/list")
-        @ResponseBody
-        public TableDataInfo list(HomeSubjectSpu homeSubjectSpu)
-        {
-            startPage();
-            List<HomeSubjectSpu> list = homeSubjectSpuService.list(
-                    new QueryWrapper<>(homeSubjectSpu)
-            );
-            return getDataTable(list);
-        }
+    /**
+     * 导出【请填写功能名称】列表
+     */
+    // @PreAuthorize("@ss.hasPermi('coupon:homeSubjectSpu:export')")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.EXPORT)
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, HomeSubjectSpu homeSubjectSpu)
+    {
+        List<HomeSubjectSpu> list = homeSubjectSpuService.list(new QueryWrapper<>(homeSubjectSpu));
+        ExcelUtil<HomeSubjectSpu> util = new ExcelUtil<HomeSubjectSpu>(HomeSubjectSpu.class);
+        util.exportExcel(response, list, "【请填写功能名称】数据");
+    }
+
+    /**
+     * 获取【请填写功能名称】详细信息
+     */
+    // @PreAuthorize("@ss.hasPermi('coupon:homeSubjectSpu:query')")
+    @GetMapping("/info/{id}")
+    public AjaxResult getInfo(@PathVariable("id") Long id)
+    {
+        return success(homeSubjectSpuService.getById(id));
+    }
 
     /**
      * 新增【请填写功能名称】
      */
-    @GetMapping("/add")
-    public String add()
-    {
-        return prefix + "/add";
-    }
-
-    /**
-     * 新增保存【请填写功能名称】
-     */
+    // @PreAuthorize("@ss.hasPermi('coupon:homeSubjectSpu:add')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
-    @PostMapping("/add")
-    @ResponseBody
-    public AjaxResult addSave(HomeSubjectSpu homeSubjectSpu)
+    @PostMapping("/save")
+    public AjaxResult add(@RequestBody HomeSubjectSpu homeSubjectSpu)
     {
-        return homeSubjectSpuService.save(homeSubjectSpu)
-                ? AjaxResult.success()
-                : AjaxResult.error();
+        return toAjax(homeSubjectSpuService.save(homeSubjectSpu));
     }
 
     /**
      * 修改【请填写功能名称】
      */
-    @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
+    // @PreAuthorize("@ss.hasPermi('coupon:homeSubjectSpu:edit')")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
+    @PutMapping("/update")
+    public AjaxResult edit(@RequestBody HomeSubjectSpu homeSubjectSpu)
     {
-        HomeSubjectSpu homeSubjectSpu = homeSubjectSpuService.getById(id);
-        mmap.put("homeSubjectSpu", homeSubjectSpu);
-        return prefix + "/edit";
+        return toAjax(homeSubjectSpuService.updateById(homeSubjectSpu));
     }
 
     /**
-     * 修改保存【请填写功能名称】
+     * 删除【请填写功能名称】
      */
-    @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
-    @PostMapping("/edit")
-    @ResponseBody
-    public AjaxResult editSave(HomeSubjectSpu homeSubjectSpu)
+    // @PreAuthorize("@ss.hasPermi('coupon:homeSubjectSpu:remove')")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
+    @PostMapping("/delete")
+    public AjaxResult remove(@RequestBody List<Long> ids)
     {
-        return homeSubjectSpuService.updateById(homeSubjectSpu)
-                ? AjaxResult.success()
-                : AjaxResult.error();
+        return toAjax(homeSubjectSpuService.removeByIds(ids));
     }
-
-        /**
-         * 删除【请填写功能名称】
-         */
-        @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-        @PostMapping( "/remove")
-        @ResponseBody
-        public AjaxResult remove(List<String> ids)
-        {
-            return homeSubjectSpuService.removeByIds(ids)
-                    ? AjaxResult.success()
-                    : AjaxResult.error();
-        }
 }

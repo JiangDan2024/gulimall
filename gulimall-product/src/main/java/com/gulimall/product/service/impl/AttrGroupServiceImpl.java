@@ -12,12 +12,15 @@ import com.gulimall.product.domain.AttrAttrgroupRelation;
 import com.gulimall.product.mapper.AttrAttrgroupRelationMapper;
 import com.gulimall.product.mapper.AttrMapper;
 import com.gulimall.product.service.ICategoryService;
+import com.gulimall.product.vo.AttrGroupWithAttrVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.gulimall.product.mapper.AttrGroupMapper;
 import com.gulimall.product.domain.AttrGroup;
 import com.gulimall.product.service.IAttrGroupService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,6 +100,30 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
             });
         }
         return attrMapper.selectPage(page, wrapper);
+    }
+
+    @Override
+    public List<AttrGroupWithAttrVo> withAttr(Long catId) {
+        List<AttrGroupWithAttrVo> vos = new ArrayList<>();
+        //获取该分类下关联的所有的分组
+        List<AttrGroup> catelogId = this.list(new QueryWrapper<AttrGroup>().eq("catelog_id", catId));
+        List<Long> groupIdList = catelogId.stream().map(AttrGroup::getAttrGroupId).toList();
+        //获取分组下所有属性
+        List<AttrGroup> attrGroups = this.listByIds(groupIdList);
+        attrGroups.forEach(attrGroup -> {
+            AttrGroupWithAttrVo attrGroupWithAttrVo = new AttrGroupWithAttrVo();
+            BeanUtils.copyProperties(attrGroup, attrGroupWithAttrVo);
+            Long attrGroupId = attrGroup.getAttrGroupId();
+            List<AttrAttrgroupRelation> attrRelations = attrAttrgroupRelationMapper.selectList(new QueryWrapper<AttrAttrgroupRelation>().eq("attr_group_id", attrGroupId));
+            List<Long> attrIds = attrRelations.stream().map(AttrAttrgroupRelation::getAttrId).toList();
+            if(attrIds!=null&&attrIds.size()>0){
+                List<Attr> attrs = attrMapper.selectByIds(attrIds);
+                attrGroupWithAttrVo.setAttrs(attrs);
+            }
+            vos.add(attrGroupWithAttrVo);
+        });
+        //封装成AttrGroupWithAttrVo返回
+        return vos;
     }
     // 单表 CRUD 由 ServiceImpl 提供，如有自定义业务方法可在此处扩展
 }

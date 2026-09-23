@@ -1,17 +1,14 @@
 package com.gulimall.member.mapper;
 
-import com.gulimall.member.domain.IntegrationChangeHistory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+import com.gulimall.member.domain.IntegrationChangeHistory;
 
 /**
  * 【请填写功能名称】Mapper接口
- * 
- * @author jiangdan
- * @date 2026-09-12
+ *
+ * @author jdjdjd
+ * @date 2026-09-20
  */
-@Mapper
-public interface IntegrationChangeHistoryMapper extends BaseMapper<IntegrationChangeHistory>
-{
-
+public interface IntegrationChangeHistoryMapper extends BaseMapper<IntegrationChangeHistory> {
+    // 单表 CRUD 由 BaseMapper 提供，如有复杂连表查询可在此处扩展
 }

@@ -14,5 +14,9 @@ import com.gulimall.product.service.ISpuInfoDescService;
  */
 @Service
 public class SpuInfoDescServiceImpl extends ServiceImpl<SpuInfoDescMapper, SpuInfoDesc> implements ISpuInfoDescService {
+    @Override
+    public void saveSpuInfoDesc(SpuInfoDesc spuInfoDesc) {
+        this.baseMapper.insert(spuInfoDesc);
+    }
     // 单表 CRUD 由 ServiceImpl 提供，如有自定义业务方法可在此处扩展
 }

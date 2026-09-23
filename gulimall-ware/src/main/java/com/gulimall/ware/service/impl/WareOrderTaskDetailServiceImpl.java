@@ -10,7 +10,7 @@ import com.gulimall.ware.service.IWareOrderTaskDetailService;
  * 【请填写功能名称】Service业务层处理
  *
  * @author jdjdjd
- * @date 2026-09-16
+ * @date 2026-09-22
  */
 @Service
 public class WareOrderTaskDetailServiceImpl extends ServiceImpl<WareOrderTaskDetailMapper, WareOrderTaskDetail> implements IWareOrderTaskDetailService {

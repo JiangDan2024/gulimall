@@ -1,6 +1,7 @@
 package com.gulimall.product.domain;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -13,7 +14,7 @@ import com.gulimall.common.core.domain.BaseEntity;
  * 【请填写功能名称】对象 pms_spu_info
  *
  * @author jdjdjd
- * @date 2026-09-19
+ * @date 2026-09-20
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -49,5 +50,11 @@ private static final long serialVersionUID = 1L;
     /** 上架状态[0 - 下架，1 - 上架] */
     @Excel(name = "上架状态[0 - 下架，1 - 上架]")
     private Long publishStatus;
+
+    /** $column.columnComment */
+    private LocalDateTime createTime;
+
+    /** $column.columnComment */
+    private LocalDateTime updateTime;
 
 }

@@ -1,15 +1,14 @@
 package com.gulimall.coupon.service;
 
-import com.gulimall.coupon.domain.CouponSpuCategoryRelation;
 import com.baomidou.mybatisplus.spring.service.IService;
+import com.gulimall.coupon.domain.CouponSpuCategoryRelation;
 
 /**
  * 【请填写功能名称】Service接口
- * 
- * @author jiangdan
- * @date 2026-09-12
+ *
+ * @author jdjdjd
+ * @date 2026-09-22
  */
-public interface ICouponSpuCategoryRelationService extends IService<CouponSpuCategoryRelation>
-{
-
+public interface ICouponSpuCategoryRelationService extends IService<CouponSpuCategoryRelation> {
+    // 单表 CRUD 由 IService 提供，如有自定义业务方法可在此处扩展
 }

@@ -47,6 +47,11 @@ public class AttrGroupController extends BaseController
     private IAttrAttrgroupRelationService iAttrAttrgroupRelationService;
 
 
+    //查询对应分类下的所有分组及属性
+    @GetMapping("/{catId}/withattr")
+    public AjaxResult withAttr(@PathVariable("catId") Long catId){
+        return AjaxResult.success().put("data",attrGroupService.withAttr(catId));
+    }
     //分组与属性的关联查询，当前分组下关联的所有属性
     @GetMapping("/{groupId}/attr/relation")
     public AjaxResult attrRelation(@PathVariable("groupId") Long groupId){

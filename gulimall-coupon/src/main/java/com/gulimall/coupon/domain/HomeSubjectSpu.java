@@ -1,44 +1,44 @@
 package com.gulimall.coupon.domain;
 
-import com.gulimall.common.annotation.Excel;
-import lombok.Getter;
-import lombok.Setter;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import com.gulimall.common.annotation.Excel;
 import com.gulimall.common.core.domain.BaseEntity;
 
 /**
  * 【请填写功能名称】对象 sms_home_subject_spu
  *
- * @author jiangdan
- * @date 2026-09-12
+ * @author jdjdjd
+ * @date 2026-09-22
  */
-@Getter
-@Setter
-@TableName("sms_home_subject_spu")
-public class HomeSubjectSpu extends BaseEntity
-{
-    private static final long serialVersionUID = 1L;
+        @Data
+        @EqualsAndHashCode(callSuper = true)
+        @TableName("sms_home_subject_spu")
+        public class HomeSubjectSpu extends BaseEntity
+        {
+        private static final long serialVersionUID = 1L;
 
-        /** id */
-    @TableId(value = "id", type = IdType.AUTO)
+            /** id */
+        @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-        /** 专题名字 */
-        @Excel(name = "专题名字")
+            /** 专题名字 */
+            @Excel(name = "专题名字")
     private String name;
 
-        /** 专题id */
-        @Excel(name = "专题id")
+            /** 专题id */
+            @Excel(name = "专题id")
     private Long subjectId;
 
-        /** spu_id */
-        @Excel(name = "spu_id")
+            /** spu_id */
+            @Excel(name = "spu_id")
     private Long spuId;
 
-        /** 排序 */
-        @Excel(name = "排序")
+            /** 排序 */
+            @Excel(name = "排序")
     private Long sort;
 
-}
+        }

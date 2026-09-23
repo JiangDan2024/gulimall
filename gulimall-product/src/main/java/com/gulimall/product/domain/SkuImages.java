@@ -39,6 +39,6 @@ private static final long serialVersionUID = 1L;
 
     /** 默认图[0 - 不是默认图，1 - 是默认图] */
     @Excel(name = "默认图[0 - 不是默认图，1 - 是默认图]")
-    private Long defaultImg;
+    private Integer defaultImg;
 
 }

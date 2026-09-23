@@ -1,115 +1,117 @@
 package com.gulimall.member.controller;
 
+import java.util.Arrays;
 import java.util.List;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import com.gulimall.common.annotation.Log;
-import com.gulimall.common.enums.BusinessType;
+import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.gulimall.member.domain.MemberLevel;
-import com.gulimall.member.service.IMemberLevelService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gulimall.common.annotation.Log;
 import com.gulimall.common.core.controller.BaseController;
 import com.gulimall.common.core.domain.AjaxResult;
+import com.gulimall.common.core.page.PageDomain;
 import com.gulimall.common.core.page.TableDataInfo;
-
+import com.gulimall.common.core.page.TableSupport;
+import com.gulimall.common.enums.BusinessType;
+import com.gulimall.member.domain.MemberLevel;
+import com.gulimall.member.service.IMemberLevelService;
+import com.gulimall.common.utils.poi.ExcelUtil;
 
 /**
  * 【请填写功能名称】Controller
  *
- * @author jiangdan
- * @date 2026-09-12
+ * @author jdjdjd
+ * @date 2026-09-19
  */
-@Controller
-@RequestMapping("/member/umsMemberLevel")
+@RestController
+@RequestMapping("/member/memberLevel")
 public class MemberLevelController extends BaseController
 {
-    private String prefix = "member/umsMemberLevel";
-
     @Autowired
     private IMemberLevelService memberLevelService;
 
-    @GetMapping()
-    public String level()
+    /**
+     * 查询【请填写功能名称】列表
+     */
+    // @PreAuthorize("@ss.hasPermi('member:memberLevel:list')")
+    @GetMapping("/list")
+    public TableDataInfo list(MemberLevel memberLevel)
     {
-        return prefix + "/level";
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Page<MemberLevel> page = new Page<>(pageDomain.getPageNum(), pageDomain.getPageSize());
+        QueryWrapper<MemberLevel> wrapper = new QueryWrapper<>(memberLevel);
+        IPage<MemberLevel> result = memberLevelService.page(page, wrapper);
+
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(200);
+        rspData.setMsg("查询成功");
+        rspData.setRows(result.getRecords());
+        rspData.setTotal(result.getTotal());
+        return rspData;
     }
 
-        /**
-         * 查询【请填写功能名称】列表
-         */
-        @GetMapping("/list")
-        @ResponseBody
-        public TableDataInfo list(MemberLevel memberLevel)
-        {
-            startPage();
-            List<MemberLevel> list = memberLevelService.list(
-                    new QueryWrapper<>(memberLevel)
-            );
-            return getDataTable(list);
-        }
+    /**
+     * 导出【请填写功能名称】列表
+     */
+    // @PreAuthorize("@ss.hasPermi('member:memberLevel:export')")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.EXPORT)
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, MemberLevel memberLevel)
+    {
+        List<MemberLevel> list = memberLevelService.list(new QueryWrapper<>(memberLevel));
+        ExcelUtil<MemberLevel> util = new ExcelUtil<MemberLevel>(MemberLevel.class);
+        util.exportExcel(response, list, "【请填写功能名称】数据");
+    }
+
+    /**
+     * 获取【请填写功能名称】详细信息
+     */
+    // @PreAuthorize("@ss.hasPermi('member:memberLevel:query')")
+    @GetMapping("/info/{id}")
+    public AjaxResult getInfo(@PathVariable("id") Long id)
+    {
+        return success(memberLevelService.getById(id));
+    }
 
     /**
      * 新增【请填写功能名称】
      */
-    @GetMapping("/add")
-    public String add()
-    {
-        return prefix + "/add";
-    }
-
-    /**
-     * 新增保存【请填写功能名称】
-     */
+    // @PreAuthorize("@ss.hasPermi('member:memberLevel:add')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
-    @PostMapping("/add")
-    @ResponseBody
-    public AjaxResult addSave(MemberLevel memberLevel)
+    @PostMapping("/save")
+    public AjaxResult add(@RequestBody MemberLevel memberLevel)
     {
-        return memberLevelService.save(memberLevel)
-                ? AjaxResult.success()
-                : AjaxResult.error();
+        return toAjax(memberLevelService.save(memberLevel));
     }
 
     /**
      * 修改【请填写功能名称】
      */
-    @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
+    // @PreAuthorize("@ss.hasPermi('member:memberLevel:edit')")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
+    @PutMapping("/update")
+    public AjaxResult edit(@RequestBody MemberLevel memberLevel)
     {
-        MemberLevel memberLevel = memberLevelService.getById(id);
-        mmap.put("memberLevel", memberLevel);
-        return prefix + "/edit";
+        return toAjax(memberLevelService.updateById(memberLevel));
     }
 
     /**
-     * 修改保存【请填写功能名称】
+     * 删除【请填写功能名称】
      */
-    @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
-    @PostMapping("/edit")
-    @ResponseBody
-    public AjaxResult editSave(MemberLevel memberLevel)
+    // @PreAuthorize("@ss.hasPermi('member:memberLevel:remove')")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
+    @PostMapping("/delete")
+    public AjaxResult remove(@RequestBody List<Long> ids)
     {
-        return memberLevelService.updateById(memberLevel)
-                ? AjaxResult.success()
-                : AjaxResult.error();
+        return toAjax(memberLevelService.removeByIds(ids));
     }
-
-        /**
-         * 删除【请填写功能名称】
-         */
-        @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-        @PostMapping( "/remove")
-        @ResponseBody
-        public AjaxResult remove(List<String> ids)
-        {
-            return memberLevelService.removeByIds(ids)
-                    ? AjaxResult.success()
-                    : AjaxResult.error();
-        }
 }

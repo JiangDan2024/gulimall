@@ -1,26 +1,21 @@
 package com.gulimall.ware.controller;
 
-import java.util.Arrays;
 import java.util.List;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gulimall.common.annotation.Log;
 import com.gulimall.common.core.controller.BaseController;
 import com.gulimall.common.core.domain.AjaxResult;
-import com.gulimall.common.core.page.PageDomain;
 import com.gulimall.common.core.page.TableDataInfo;
-import com.gulimall.common.core.page.TableSupport;
 import com.gulimall.common.enums.BusinessType;
 import com.gulimall.ware.domain.PurchaseDetail;
 import com.gulimall.ware.service.IPurchaseDetailService;
@@ -30,10 +25,10 @@ import com.gulimall.common.utils.poi.ExcelUtil;
  * 【请填写功能名称】Controller
  *
  * @author jdjdjd
- * @date 2026-09-16
+ * @date 2026-09-22
  */
 @RestController
-@RequestMapping("/ware/purchaseDetail")
+@RequestMapping("/ware/purchasedetail")
 public class PurchaseDetailController extends BaseController
 {
     @Autowired
@@ -46,10 +41,7 @@ public class PurchaseDetailController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(PurchaseDetail purchaseDetail)
     {
-        PageDomain pageDomain = TableSupport.buildPageRequest();
-        Page<PurchaseDetail> page = new Page<>(pageDomain.getPageNum(), pageDomain.getPageSize());
-        QueryWrapper<PurchaseDetail> wrapper = new QueryWrapper<>(purchaseDetail);
-        IPage<PurchaseDetail> result = purchaseDetailService.page(page, wrapper);
+        IPage<PurchaseDetail> result = purchaseDetailService.pageQuery(purchaseDetail);
 
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(200);
@@ -87,7 +79,7 @@ public class PurchaseDetailController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('ware:purchaseDetail:add')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
-    @PostMapping("/add")
+    @PostMapping("/save")
     public AjaxResult add(@RequestBody PurchaseDetail purchaseDetail)
     {
         return toAjax(purchaseDetailService.save(purchaseDetail));
@@ -98,7 +90,7 @@ public class PurchaseDetailController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('ware:purchaseDetail:edit')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
-    @PutMapping("/edit")
+    @PutMapping("/update")
     public AjaxResult edit(@RequestBody PurchaseDetail purchaseDetail)
     {
         return toAjax(purchaseDetailService.updateById(purchaseDetail));
@@ -109,9 +101,9 @@ public class PurchaseDetailController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('ware:purchaseDetail:remove')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-    @DeleteMapping("/remove/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
+    @PostMapping("/delete")
+    public AjaxResult remove(@RequestBody List<Long> ids)
     {
-        return toAjax(purchaseDetailService.removeByIds(Arrays.asList(ids)));
+        return toAjax(purchaseDetailService.removeByIds(ids));
     }
 }

@@ -1,13 +1,15 @@
 package com.gulimall.ware.controller;
 
-import java.util.Arrays;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import com.gulimall.ware.vo.MergeVo;
+import com.gulimall.ware.vo.PurchaseDoneVo;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +32,7 @@ import com.gulimall.common.utils.poi.ExcelUtil;
  * 【请填写功能名称】Controller
  *
  * @author jdjdjd
- * @date 2026-09-16
+ * @date 2026-09-22
  */
 @RestController
 @RequestMapping("/ware/purchase")
@@ -39,6 +41,36 @@ public class PurchaseController extends BaseController
     @Autowired
     private IPurchaseService purchaseService;
 
+    //完成采购单
+    @PostMapping("/done")
+    public AjaxResult finished(@RequestBody PurchaseDoneVo purchaseDoneVo){
+        return toAjax(purchaseService.done(purchaseDoneVo));
+    }
+
+    //PostMan模拟员工领取采购单
+    @PostMapping("/received")
+    public AjaxResult received(@RequestBody List<Long> purchaseIds){
+        return toAjax(purchaseService.received(purchaseIds));
+    }
+
+    //合并采购单
+    @PostMapping("/merge")
+    public AjaxResult merge(@RequestBody MergeVo vos){
+        return toAjax(purchaseService.merge(vos));
+    }
+    //查询新建、已分配状态的采购单
+    @GetMapping("/unreceive/list")
+    public TableDataInfo unreceiveList()
+    {
+        IPage<Purchase> result = purchaseService.unreceiveList();
+
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(200);
+        rspData.setMsg("查询成功");
+        rspData.setRows(result.getRecords());
+        rspData.setTotal(result.getTotal());
+        return rspData;
+    }
     /**
      * 查询【请填写功能名称】列表
      */
@@ -87,9 +119,11 @@ public class PurchaseController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('ware:purchase:add')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
-    @PostMapping("/add")
+    @PostMapping("/save")
     public AjaxResult add(@RequestBody Purchase purchase)
     {
+        purchase.setUpdateTime(LocalDateTime.now());
+        purchase.setCreateTime(LocalDateTime.now());
         return toAjax(purchaseService.save(purchase));
     }
 
@@ -98,9 +132,10 @@ public class PurchaseController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('ware:purchase:edit')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
-    @PutMapping("/edit")
+    @PutMapping("/update")
     public AjaxResult edit(@RequestBody Purchase purchase)
     {
+        purchase.setUpdateTime(LocalDateTime.now());
         return toAjax(purchaseService.updateById(purchase));
     }
 
@@ -109,9 +144,9 @@ public class PurchaseController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('ware:purchase:remove')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-    @DeleteMapping("/remove/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
+    @PostMapping("/delete")
+    public AjaxResult remove(@RequestBody List<Long> ids)
     {
-        return toAjax(purchaseService.removeByIds(Arrays.asList(ids)));
+        return toAjax(purchaseService.removeByIds(ids));
     }
 }

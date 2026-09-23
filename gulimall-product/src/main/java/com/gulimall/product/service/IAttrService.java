@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.spring.service.IService;
 import com.gulimall.common.core.page.PageDomain;
 import com.gulimall.product.domain.Attr;
+import com.gulimall.product.domain.ProductAttrValue;
 import com.gulimall.product.vo.AttrGroupCateVo;
 import com.gulimall.product.vo.AttrVo;
 
@@ -25,5 +26,9 @@ public interface IAttrService extends IService<Attr> {
     boolean updateAttr(AttrVo attr);
 
     List<Attr> queryGroupRelation(Long groupId);
+
+    List<ProductAttrValue> listforspu(Long spuId);
+
+    int updateAttrValue(Long spuId, List<ProductAttrValue> attrValues);
     // 单表 CRUD 由 IService 提供，如有自定义业务方法可在此处扩展
 }

@@ -35,6 +35,13 @@ public class SpuInfoController extends BaseController
     @Autowired
     private ISpuInfoService spuInfoService;
 
+    //商品上架
+    @PostMapping("/{spuId}/up")
+    public AjaxResult spuUp(@PathVariable("spuId") Long spuId){
+        spuInfoService.up(spuId);
+        return AjaxResult.success();
+    }
+
     /**
      * 查询【请填写功能名称】列表
      */

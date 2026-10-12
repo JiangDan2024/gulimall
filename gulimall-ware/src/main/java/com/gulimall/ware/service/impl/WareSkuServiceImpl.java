@@ -3,6 +3,7 @@ package com.gulimall.ware.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
 import com.gulimall.common.core.domain.AjaxResult;
+import com.gulimall.common.to.SkuHasstockVo;
 import com.gulimall.ware.feign.ProductFeign;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import com.gulimall.ware.domain.WareSku;
 import com.gulimall.ware.service.IWareSkuService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +57,19 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSku> impl
             //更新操作
             wareSkuMapper.updateFinishedStock(skuId,wareId,skuNum);
         }
+    }
+
+    @Override
+    public List<SkuHasstockVo> hasStock(List<Long> skuIds) {
+        //查询总库存
+        List<SkuHasstockVo> vos = skuIds.stream().map(skuId -> {
+            Long count = wareSkuMapper.getStockBySkuid(skuId);
+            SkuHasstockVo vo = new SkuHasstockVo();
+            vo.setSkuId(skuId);
+            vo.setHasStock(count==null?false:count>0);
+            return vo;
+        }).toList();
+        return vos;
     }
     // 单表 CRUD 由 ServiceImpl 提供，如有自定义业务方法可在此处扩展
 }

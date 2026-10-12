@@ -1,18 +1,24 @@
 package com.gulimall.product.service.impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
+import com.gulimall.common.constant.ProductConstant;
 import com.gulimall.common.core.page.PageDomain;
 import com.gulimall.common.core.page.TableSupport;
 import com.gulimall.common.to.MemberPrice;
+import com.gulimall.common.to.SkuHasstockVo;
 import com.gulimall.common.to.SkuReductionTo;
 import com.gulimall.common.to.SpuBoundsTO;
 import com.gulimall.common.core.domain.AjaxResult;
+import com.gulimall.common.to.es.SkuEsModel;
 import com.gulimall.common.utils.StringUtils;
 import com.gulimall.product.domain.*;
 import com.gulimall.product.domain.Attr;
+import com.gulimall.product.feign.SearchFeign;
+import com.gulimall.product.feign.SkuWareFeign;
 import com.gulimall.product.feign.SpuCouponFeign;
 import com.gulimall.product.service.*;
 import com.gulimall.product.vo.*;
@@ -24,8 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 【请填写功能名称】Service业务层处理
@@ -52,6 +60,16 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfo> impl
     private ISkuSaleAttrValueService iSkuSaleAttrValueService;
     @Autowired
     private SpuCouponFeign spuCouponFeign;
+    @Autowired
+    private IBrandService iBrandService;
+    @Autowired
+    private ICategoryService iCategoryService;
+    @Autowired
+    private SkuWareFeign skuWareFeign;
+    @Autowired
+    private SearchFeign searchFeign;
+    @Autowired
+    private SpuInfoMapper spuInfoMapper;
 
     public SpuInfoServiceImpl(ISpuInfoDescService iSpuInfoDescService, ISpuImagesService iSpuImagesService, IAttrService iAttrService, IProductAttrValueService iProductAttrValueService, ISkuInfoService iSkuInfoService, ISkuImagesService iSkuImagesService, ISkuSaleAttrValueService iSkuSaleAttrValueService) {
         this.iSpuInfoDescService = iSpuInfoDescService;
@@ -214,6 +232,72 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfo> impl
             wrapper.eq("publish_status", status); // 注意：确认数据库列名是否是 publish_status
         }
         return this.page(page, wrapper);
+    }
+
+    @Transactional
+    @Override
+    public void up(Long spuId) {
+
+        //spuId 查出所有sku信息
+        List<SkuInfo> skus = iSkuInfoService.getBySpuId(spuId);
+        List<Long> skuIdList = skus.stream().map(SkuInfo::getSkuId).toList();
+        //查出sku所有的规格属性(是可以被检索的)
+        List<ProductAttrValue> attrs = iAttrService.listforspuES(spuId);
+        List<SkuEsModel.Attr> esAttrs = attrs.stream().map(attr -> {
+            SkuEsModel.Attr esAttr = new SkuEsModel.Attr();
+            BeanUtils.copyProperties(attr, esAttr);
+            return esAttr;
+        }).toList();
+        //TODO 远程查询库存 hasStock
+        var ref = new Object() {
+            Map<Long, Boolean> skuStockMap = null;
+        };
+        try {
+            AjaxResult listAjaxResult = skuWareFeign.hasStock(skuIdList);
+            TypeReference<List<SkuHasstockVo>> listTypeReference = new TypeReference<>(){};
+            List<SkuHasstockVo> skuStockVos = listAjaxResult.getData(listTypeReference);
+            ref.skuStockMap = skuStockVos.stream().collect(Collectors.toMap(vo -> vo.getSkuId(), vo -> vo.getHasStock()));
+        }catch (Exception e){
+            log.error("查询库存失败{}",e);
+        }
+        //组装数据esModel
+        List<SkuEsModel> esList = skus.stream().map(s -> {
+            SkuEsModel esModel = new SkuEsModel();
+            //拷贝属性值
+            BeanUtils.copyProperties(s, esModel);
+            //需要单独赋值：skuPrice，skuImg，hasStock，hotScore，brandName，catalogName，brandImg，attrs
+            esModel.setSkuPrice(s.getPrice());
+            esModel.setSkuImg(s.getSkuDefaultImg());
+//            AjaxResult ajaxResult = skuWareFeign.hasStock(s.getSkuId());
+//            if(!ajaxResult.isSuccess()){
+//                esModel.setHasStock((Boolean) ajaxResult.get("hasStock"));
+//            }
+            //TODO 热度评分，暂赋值为0
+            esModel.setHotScore(0L);
+            if(ref.skuStockMap ==null){
+                esModel.setHasStock(true);
+            }else{
+                esModel.setHasStock(ref.skuStockMap.get(s.getSkuId()));
+            }
+            //品牌名、图片、分类名称查询
+            Brand brand = iBrandService.getById(esModel.getBrandId());
+            esModel.setBrandName(brand.getName());
+            esModel.setBrandImg(brand.getLogo());
+            Category category = iCategoryService.getById(esModel.getCatalogId());
+            esModel.setCatalogName(category.getName());
+            esModel.setAttrs(esAttrs);
+            return esModel;
+        }).toList();
+
+        //TODO 发给es保存
+        AjaxResult searchRes = searchFeign.productUp(esList);
+        if(searchRes.isSuccess()){
+            //修改状态
+            spuInfoMapper.updateStatuUp(spuId, ProductConstant.StatusEnum.SPU_UP.getCode());
+        }else{
+            //TODO 失败 重复调用？接口幂等性？重试机制
+            log.error("商品上架失败");
+        }
     }
     // 单表 CRUD 由 ServiceImpl 提供，如有自定义业务方法可在此处扩展
 }

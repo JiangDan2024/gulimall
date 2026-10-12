@@ -14,6 +14,8 @@ import com.gulimall.product.domain.Brand;
 import com.gulimall.product.service.IBrandService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * 【请填写功能名称】Service业务层处理
  *
@@ -47,6 +49,11 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
         //更新级联表
         categoryBrandRelationService.updateBrand(brand.getBrandId(),brand.getName());
         return 1;
+    }
+
+    @Override
+    public List<Brand> getInfos(List<Long> brandIds) {
+        return this.list(new QueryWrapper<Brand>().in("brand_id",brandIds));
     }
     // 单表 CRUD 由 ServiceImpl 提供，如有自定义业务方法可在此处扩展
 }

@@ -13,6 +13,7 @@ import com.gulimall.product.domain.SkuInfo;
 import com.gulimall.product.service.ISkuInfoService;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -74,6 +75,11 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
             }
         }
         return this.page(page,wrapper);
+    }
+
+    @Override
+    public List<SkuInfo> getBySpuId(Long spuId) {
+        return this.list(new QueryWrapper<SkuInfo>().eq("spu_id",spuId));
     }
     // 单表 CRUD 由 ServiceImpl 提供，如有自定义业务方法可在此处扩展
 }

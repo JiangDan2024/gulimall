@@ -30,5 +30,7 @@ public interface IAttrService extends IService<Attr> {
     List<ProductAttrValue> listforspu(Long spuId);
 
     int updateAttrValue(Long spuId, List<ProductAttrValue> attrValues);
+
+    List<ProductAttrValue> listforspuES(Long spuId);
     // 单表 CRUD 由 IService 提供，如有自定义业务方法可在此处扩展
 }

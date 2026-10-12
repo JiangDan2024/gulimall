@@ -1,6 +1,8 @@
 package com.gulimall.ware.controller;
 
 import java.util.List;
+
+import com.gulimall.common.to.SkuHasstockVo;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +39,14 @@ public class WareSkuController extends BaseController
     @Autowired
     private IWareSkuService wareSkuService;
 
+    //根据skuid查询是否有库存
+    @PostMapping("/hasStock")
+    public AjaxResult hasStock(@RequestBody List<Long> skuIds)
+    {
+        AjaxResult success = AjaxResult.success();
+        success.setData(wareSkuService.hasStock(skuIds));
+        return success;
+    }
     /**
      * 查询【请填写功能名称】列表
      */

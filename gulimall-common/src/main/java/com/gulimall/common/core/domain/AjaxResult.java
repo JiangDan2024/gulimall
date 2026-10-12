@@ -1,5 +1,7 @@
 package com.gulimall.common.core.domain;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.gulimall.common.utils.StringUtils;
 
 import java.util.HashMap;
@@ -12,6 +14,20 @@ import java.util.Objects;
  */
 public class AjaxResult extends HashMap<String, Object>
 {
+
+    //利用fastjson进行逆转
+    public <T> T getData(TypeReference<T> type){
+        Object data = this.get("data");
+        String json = JSON.toJSONString(data);
+        T t = JSON.parseObject(json, type);
+        return t;
+    }
+
+    public AjaxResult setData(Object data){
+        super.put("data", data);
+        return this;
+    }
+
     private static final long serialVersionUID = 1L;
 
     /** 状态码 */
@@ -66,6 +82,12 @@ public class AjaxResult extends HashMap<String, Object>
         super.put(MSG_TAG, msg);
     }
 
+    public AjaxResult(int code, String msg)
+    {
+        super.put(CODE_TAG, code);
+        super.put(MSG_TAG, msg);
+    }
+
     /**
      * 初始化一个新创建的 AjaxResult 对象
      *
@@ -76,6 +98,16 @@ public class AjaxResult extends HashMap<String, Object>
     public AjaxResult(Type type, String msg, Object data)
     {
         super.put(CODE_TAG, type.value);
+        super.put(MSG_TAG, msg);
+        if (StringUtils.isNotNull(data))
+        {
+            super.put(DATA_TAG, data);
+        }
+    }
+
+    public AjaxResult(int code, String msg, Object data)
+    {
+        super.put(CODE_TAG, code);
         super.put(MSG_TAG, msg);
         if (StringUtils.isNotNull(data))
         {

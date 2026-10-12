@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.spring.service.IService;
 import com.gulimall.product.domain.SkuInfo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +17,7 @@ public interface ISkuInfoService extends IService<SkuInfo> {
     void savSkuInfo(SkuInfo skuInfo);
 
     IPage<SkuInfo> pageQuery(Map<String, Object> params);
+
+    List<SkuInfo> getBySpuId(Long spuId);
     // 单表 CRUD 由 IService 提供，如有自定义业务方法可在此处扩展
 }

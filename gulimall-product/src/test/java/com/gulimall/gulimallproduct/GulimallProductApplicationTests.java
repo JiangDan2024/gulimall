@@ -1,17 +1,38 @@
 package com.gulimall.gulimallproduct;
 
+import com.gulimall.common.utils.uuid.UUID;
 import com.gulimall.product.GulimallProductApplication;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 
+@Slf4j
 @SpringBootTest(classes = GulimallProductApplication.class)
 class GulimallProductApplicationTests {
 
 //    @Autowired
 //    private OSS ossClient;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @Autowired
+    private RedissonClient redissonClient;
+
+    @Test
+    void redissonTest(){
+        System.out.println(redissonClient);
+
+    }
     @Test
     void contextLoads() {
+        redisTemplate.opsForValue().set("hello", "world"+ UUID.randomUUID().toString());
+        Object hello = redisTemplate.opsForValue().get("hello");
+        System.out.println(hello.toString());
     }
 //
 //    @Test

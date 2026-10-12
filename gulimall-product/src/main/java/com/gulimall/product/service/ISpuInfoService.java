@@ -19,5 +19,7 @@ public interface ISpuInfoService extends IService<SpuInfo> {
     void saveBaseSpuInfo(SpuInfo spuInfo);
 
     IPage<SpuInfo> pageQuery(Map<String, Object> params);
+
+    void up(Long spuId);
     // 单表 CRUD 由 IService 提供，如有自定义业务方法可在此处扩展
 }

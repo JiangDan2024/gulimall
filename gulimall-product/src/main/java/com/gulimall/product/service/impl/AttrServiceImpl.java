@@ -18,6 +18,7 @@ import com.gulimall.product.service.IProductAttrValueService;
 import com.gulimall.product.vo.AttrGroupCateVo;
 import com.gulimall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import com.gulimall.product.mapper.AttrMapper;
 import com.gulimall.product.service.IAttrService;
@@ -48,6 +49,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements IA
 
     @Autowired
     IProductAttrValueService productAttrValueService;
+
     @Transactional
     @Override
     public int saveAttr(AttrVo attrVo) {
@@ -102,6 +104,8 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements IA
         return pageRes;
     }
 
+    //加上缓存
+    @Cacheable(value = "attr",key="'attrinfo:'+#root.args[0]")
     @Transactional
     @Override
     public AttrGroupCateVo getAttr(Long attrId) {
@@ -185,6 +189,21 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements IA
         });
         productAttrValueService.saveBatch(attrValues);
         return 1;
+    }
+
+    @Override
+    public List<ProductAttrValue> listforspuES(Long spuId) {
+        //查出spu对应的属性
+        QueryWrapper<ProductAttrValue> wrapper = new QueryWrapper<ProductAttrValue>();
+        if(spuId!=null){
+            wrapper.eq("spu_id",spuId);
+        }
+        List<ProductAttrValue> list = productAttrValueService.list(wrapper);
+        //筛选出可检索的
+        return list.stream().filter(attr -> {
+            Attr byId = this.getById(attr.getAttrId());
+            return byId != null && byId.getSearchType() == 1;
+        }).toList();
     }
     // 单表 CRUD 由 ServiceImpl 提供，如有自定义业务方法可在此处扩展
 }

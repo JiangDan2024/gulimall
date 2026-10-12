@@ -12,5 +12,7 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface WareSkuMapper extends BaseMapper<WareSku> {
     void updateFinishedStock(@Param("skuId") Long skuId,@Param("wareId") Long wareId,@Param("skuNum") Long skuNum);
+
+    Long getStockBySkuid(Long skuId);
     // 单表 CRUD 由 BaseMapper 提供，如有复杂连表查询可在此处扩展
 }

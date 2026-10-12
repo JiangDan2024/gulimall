@@ -12,7 +12,6 @@ import com.gulimall.ware.domain.WareSku;
 import com.gulimall.ware.service.IWareSkuService;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

@@ -2,7 +2,6 @@ package com.gulimall.ware.controller;
 
 import java.util.List;
 
-import com.gulimall.common.to.SkuHasstockVo;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

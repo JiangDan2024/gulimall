@@ -58,7 +58,8 @@ public class SearchListServiceImpl implements SearchListService {
     }
 
     private SearchResult buildSearchResult(SearchResponse<SkuEsModel> searchResponse,SearchParam param) throws IOException {
-        SearchResult  searchResults = new SearchResult();
+        SearchResult searchResults = new SearchResult();
+        searchResults.setAttrIds(new ArrayList<>());
         //封装所查询到的商品
         List<SkuEsModel> products = new ArrayList<>();
         for (Hit<SkuEsModel> hit : searchResponse.hits().hits()) {

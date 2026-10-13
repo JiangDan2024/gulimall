@@ -1,5 +1,6 @@
 package com.gulimall.product.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import com.gulimall.product.mapper.SkuImagesMapper;
@@ -21,6 +22,12 @@ public class SkuImagesServiceImpl extends ServiceImpl<SkuImagesMapper, SkuImages
         if (skuImagesList!=null&&skuImagesList.size()>0){
             this.baseMapper.insert(skuImagesList);
         }
+    }
+
+    @Override
+    public List<SkuImages> getImagesBySkuid(String skuId) {
+        List<SkuImages> images = this.list(new QueryWrapper<SkuImages>().eq("sku_id", skuId));
+        return images;
     }
     // 单表 CRUD 由 ServiceImpl 提供，如有自定义业务方法可在此处扩展
 }

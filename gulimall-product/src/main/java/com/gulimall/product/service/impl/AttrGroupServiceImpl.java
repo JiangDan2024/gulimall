@@ -13,6 +13,7 @@ import com.gulimall.product.mapper.AttrAttrgroupRelationMapper;
 import com.gulimall.product.mapper.AttrMapper;
 import com.gulimall.product.service.ICategoryService;
 import com.gulimall.product.vo.AttrGroupWithAttrVo;
+import com.gulimall.product.vo.SpuItemAttrGroupVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,8 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
     private AttrAttrgroupRelationMapper attrAttrgroupRelationMapper;
     @Autowired
     private AttrMapper attrMapper;
+    @Autowired
+    private AttrGroupMapper attrGroupMapper;
 
 //    @Override
 //    public IPage<AttrGroup> pageAddPath(Page<AttrGroup> page, QueryWrapper<AttrGroup> wrapper) {
@@ -124,6 +127,12 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
         });
         //封装成AttrGroupWithAttrVo返回
         return vos;
+    }
+
+    @Override
+    public List<SpuItemAttrGroupVo> getAttrGroupWithAttrBySpuId(Long spuId, Long catalogId) {
+        List<SpuItemAttrGroupVo> attrs = attrGroupMapper.getAttrGroupWithAttrBySpuId(spuId,catalogId);
+        return attrs;
     }
     // 单表 CRUD 由 ServiceImpl 提供，如有自定义业务方法可在此处扩展
 }

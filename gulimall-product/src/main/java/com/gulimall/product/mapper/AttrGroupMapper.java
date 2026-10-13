@@ -2,6 +2,10 @@ package com.gulimall.product.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.gulimall.product.domain.AttrGroup;
+import com.gulimall.product.vo.SpuItemAttrGroupVo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 【请填写功能名称】Mapper接口
@@ -10,5 +14,6 @@ import com.gulimall.product.domain.AttrGroup;
  * @date 2026-09-16
  */
 public interface AttrGroupMapper extends BaseMapper<AttrGroup> {
+    List<SpuItemAttrGroupVo> getAttrGroupWithAttrBySpuId(@Param("spuId") Long spuId,@Param("catalogId") Long catalogId);
     // 单表 CRUD 由 BaseMapper 提供，如有复杂连表查询可在此处扩展
 }

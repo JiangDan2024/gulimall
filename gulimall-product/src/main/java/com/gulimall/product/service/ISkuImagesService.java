@@ -13,5 +13,7 @@ import java.util.List;
  */
 public interface ISkuImagesService extends IService<SkuImages> {
     void saveSkuImages(List<SkuImages> skuImagesList);
+
+    List<SkuImages> getImagesBySkuid(String skuId);
     // 单表 CRUD 由 IService 提供，如有自定义业务方法可在此处扩展
 }

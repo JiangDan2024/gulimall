@@ -2,12 +2,18 @@ package com.gulimall.gulimallproduct;
 
 import com.gulimall.common.utils.uuid.UUID;
 import com.gulimall.product.GulimallProductApplication;
+import com.gulimall.product.service.IAttrGroupService;
+import com.gulimall.product.service.ISkuSaleAttrValueService;
+import com.gulimall.product.vo.SaleAttrVo;
+import com.gulimall.product.vo.SpuItemAttrGroupVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+
+import java.util.List;
 
 @Slf4j
 @SpringBootTest(classes = GulimallProductApplication.class)
@@ -21,6 +27,20 @@ class GulimallProductApplicationTests {
 
     @Autowired
     private RedissonClient redissonClient;
+
+    @Autowired
+    IAttrGroupService attrGroupService;
+
+    @Autowired
+    ISkuSaleAttrValueService  skuSaleAttrValueService;
+
+    @Test
+    void attrGroupTest() {
+//        List<SpuItemAttrGroupVo> group = attrGroupService.getAttrGroupWithAttrBySpuId(188L, 225L);
+//        System.out.println(group);
+        List<SaleAttrVo> saleAttrsBySpuId = skuSaleAttrValueService.getSaleAttrsBySpuId(8L);
+        System.out.println(saleAttrsBySpuId);
+    }
 
     @Test
     void redissonTest(){

@@ -2,6 +2,7 @@ package com.gulimall.product.service;
 
 import com.baomidou.mybatisplus.spring.service.IService;
 import com.gulimall.product.domain.SkuSaleAttrValue;
+import com.gulimall.product.vo.SaleAttrVo;
 
 import java.util.List;
 
@@ -13,5 +14,7 @@ import java.util.List;
  */
 public interface ISkuSaleAttrValueService extends IService<SkuSaleAttrValue> {
     void saveSkuSaleAttrs(List<SkuSaleAttrValue> skuSaleAttrList);
+
+    List<SaleAttrVo> getSaleAttrsBySpuId(Long spuId);
     // 单表 CRUD 由 IService 提供，如有自定义业务方法可在此处扩展
 }

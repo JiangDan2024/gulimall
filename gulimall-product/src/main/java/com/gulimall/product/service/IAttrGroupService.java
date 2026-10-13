@@ -6,6 +6,7 @@ import com.gulimall.common.core.page.PageDomain;
 import com.gulimall.product.domain.Attr;
 import com.gulimall.product.domain.AttrGroup;
 import com.gulimall.product.vo.AttrGroupWithAttrVo;
+import com.gulimall.product.vo.SpuItemAttrGroupVo;
 
 import java.util.List;
 
@@ -24,5 +25,7 @@ public interface IAttrGroupService extends IService<AttrGroup> {
     IPage<Attr> noAttrRelation(PageDomain pageDomain, AttrGroup attrGroup, Long groupId);
 
     List<AttrGroupWithAttrVo> withAttr(Long catId);
+
+    List<SpuItemAttrGroupVo> getAttrGroupWithAttrBySpuId(Long spuId, Long catalogId);
     // 单表 CRUD 由 IService 提供，如有自定义业务方法可在此处扩展
 }

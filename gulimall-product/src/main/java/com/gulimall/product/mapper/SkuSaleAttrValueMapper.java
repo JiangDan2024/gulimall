@@ -2,6 +2,10 @@ package com.gulimall.product.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.gulimall.product.domain.SkuSaleAttrValue;
+import com.gulimall.product.vo.SaleAttrVo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 【请填写功能名称】Mapper接口
@@ -10,5 +14,6 @@ import com.gulimall.product.domain.SkuSaleAttrValue;
  * @date 2026-09-19
  */
 public interface SkuSaleAttrValueMapper extends BaseMapper<SkuSaleAttrValue> {
+    List<SaleAttrVo> getSaleAttrsBySpuId(@Param("spuId") Long spuId);
     // 单表 CRUD 由 BaseMapper 提供，如有复杂连表查询可在此处扩展
 }

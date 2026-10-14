@@ -2,6 +2,11 @@ package com.gulimall.member.controller;
 
 import java.util.Arrays;
 import java.util.List;
+
+import com.gulimall.common.exception.BizCodeEnume;
+import com.gulimall.member.exception.PhoneExistException;
+import com.gulimall.member.exception.UserNameExistException;
+import com.gulimall.member.vo.UserRegisterVo;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -91,6 +96,20 @@ public class MemberController extends BaseController
     public AjaxResult add(@RequestBody Member member)
     {
         return toAjax(memberService.save(member));
+    }
+
+
+    @PostMapping("/register")
+    public AjaxResult register(@RequestBody UserRegisterVo vo){
+        try{
+            memberService.register(vo);
+        }catch (PhoneExistException e){
+            //TODO 不同的异常进行不同的处理
+            return new AjaxResult(BizCodeEnume.PHONE_EXIST_EXCEPTION.getCode(),BizCodeEnume.PHONE_EXIST_EXCEPTION.getMsg(),e);
+        }catch(UserNameExistException e){
+            return new AjaxResult(BizCodeEnume.USER_EXIST_EXCEPTION.getCode(),BizCodeEnume.USER_EXIST_EXCEPTION.getMsg(),e);
+        }
+        return AjaxResult.success();
     }
 
     /**

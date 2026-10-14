@@ -5,7 +5,6 @@ import com.gulimall.product.GulimallProductApplication;
 import com.gulimall.product.service.IAttrGroupService;
 import com.gulimall.product.service.ISkuSaleAttrValueService;
 import com.gulimall.product.vo.SaleAttrVo;
-import com.gulimall.product.vo.SpuItemAttrGroupVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.redisson.api.RedissonClient;

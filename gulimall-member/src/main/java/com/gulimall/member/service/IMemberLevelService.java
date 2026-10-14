@@ -10,5 +10,6 @@ import com.gulimall.member.domain.MemberLevel;
  * @date 2026-09-19
  */
 public interface IMemberLevelService extends IService<MemberLevel> {
+    long getDefaultLevel();
     // 单表 CRUD 由 IService 提供，如有自定义业务方法可在此处扩展
 }

@@ -3,6 +3,7 @@ package com.gulimall.auth.web;
 import com.alibaba.fastjson.TypeReference;
 import com.gulimall.auth.feign.MemberFeign;
 import com.gulimall.auth.feign.ThirdPartFeign;
+import com.gulimall.auth.vo.UserLoginVo;
 import com.gulimall.auth.vo.UserRegisteVo;
 import com.gulimall.common.constant.AuthConstants;
 import com.gulimall.common.core.domain.AjaxResult;
@@ -90,9 +91,7 @@ public class AuthController {
                     return "redirect:http://auth.gulimall.com/login.html";
                 }else{
                     Map<String, String> errors = new HashMap<>();
-                    Map<String, String> data = r.getData(new TypeReference<Map<String, String>>() {
-                    });
-                    errors.put("msg",data.get("msg"));
+                    errors.put("msg",r.getData("msg",new TypeReference<String>() {}));
                     redirectAttributes.addFlashAttribute("errors",errors);
                     return "redirect:http://auth.gulimall.com/reg.html";
                 }
@@ -107,6 +106,22 @@ public class AuthController {
             errors.put("code","验证码已失效");
             redirectAttributes.addFlashAttribute("errors",errors);
             return "redirect:http://auth.gulimall.com/reg.html";
+        }
+    }
+
+    @PostMapping("/login")
+    public String login(UserLoginVo loginVo,RedirectAttributes redirectAttributes){
+        //远程调用登录方法
+        AjaxResult login = memberFeign.login(loginVo);
+        if(login.isSuccess()){
+            //TODO登录成功处理
+            //登录成功返回首页
+            return "redirect:http://gulimall.com";
+        }else{
+            Map<String, String> errors = new HashMap<>();
+            errors.put("msg",login.getData("msg",new TypeReference<String>() {}));
+            redirectAttributes.addFlashAttribute("errors",errors);
+            return "redirect:http://auth.gulimall.com/login.html";
         }
 
     }

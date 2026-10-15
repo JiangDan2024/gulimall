@@ -95,4 +95,8 @@ import com.gulimall.common.core.domain.BaseEntity;
             /** 注册时间 */
     private Date createTime;
 
+    private String socialUid;
+    private String accessToken;
+    private Long expiresIn;
+
         }

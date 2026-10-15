@@ -1,7 +1,6 @@
 package com.gulimall.member;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.codec.digest.Md5Crypt;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

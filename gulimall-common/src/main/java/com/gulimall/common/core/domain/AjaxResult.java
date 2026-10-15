@@ -23,6 +23,14 @@ public class AjaxResult extends HashMap<String, Object>
         return t;
     }
 
+    //利用fastjson进行逆转
+    public <T> T getData(String code,TypeReference<T> type){
+        Object data = this.get(code);
+        String json = JSON.toJSONString(data);
+        T t = JSON.parseObject(json, type);
+        return t;
+    }
+
     public AjaxResult setData(Object data){
         super.put("data", data);
         return this;

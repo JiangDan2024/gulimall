@@ -1,18 +1,18 @@
 package com.gulimall.member.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
 import com.gulimall.common.exception.BizCodeEnume;
 import com.gulimall.member.exception.PhoneExistException;
 import com.gulimall.member.exception.UserNameExistException;
+import com.gulimall.member.vo.SocialUser;
+import com.gulimall.member.vo.UserLoginVo;
 import com.gulimall.member.vo.UserRegisterVo;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -98,6 +98,23 @@ public class MemberController extends BaseController
         return toAjax(memberService.save(member));
     }
 
+    @PostMapping("/login")
+    public AjaxResult login(@RequestBody UserLoginVo vo){
+
+        Member member = memberService.login(vo);
+        if(member==null){
+            return new AjaxResult(BizCodeEnume.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getCode(),BizCodeEnume.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getMsg());
+        }else{
+            return AjaxResult.success(member);
+        }
+    }
+
+    @PostMapping("/oauth2/weibo")
+    public AjaxResult oauth2loggin(@RequestBody SocialUser socialUser){
+        //重写一个社交登录方法，合并了注册和登录
+        Member member = memberService.login(socialUser);
+        return AjaxResult.success(member);
+    }
 
     @PostMapping("/register")
     public AjaxResult register(@RequestBody UserRegisterVo vo){

@@ -1,5 +1,6 @@
 package com.gulimall.thirdparty;
 
+import com.alibaba.nacos.common.http.HttpUtils;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.google.gson.Gson;

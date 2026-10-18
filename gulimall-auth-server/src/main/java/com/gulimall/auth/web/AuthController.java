@@ -10,6 +10,8 @@ import com.gulimall.common.core.domain.AjaxResult;
 import com.gulimall.common.exception.BizCodeEnume;
 import com.gulimall.common.utils.StringUtils;
 import com.gulimall.common.utils.uuid.UUID;
+import com.gulimall.common.vo.MemberVo;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,12 +112,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(UserLoginVo loginVo,RedirectAttributes redirectAttributes){
+    public String login(UserLoginVo loginVo, RedirectAttributes redirectAttributes, HttpSession session){
         //远程调用登录方法
         AjaxResult login = memberFeign.login(loginVo);
         if(login.isSuccess()){
-            //TODO登录成功处理
             //登录成功返回首页
+            MemberVo data = login.getData(new TypeReference<MemberVo>() {
+            });
+            session.setAttribute(AuthConstants.LOGIN_USER,data);
             return "redirect:http://gulimall.com";
         }else{
             Map<String, String> errors = new HashMap<>();
@@ -123,6 +127,16 @@ public class AuthController {
             redirectAttributes.addFlashAttribute("errors",errors);
             return "redirect:http://auth.gulimall.com/login.html";
         }
-
     }
+
+    //登录请求，需要判断是否已登录过，如果登陆过，就直接跳转到首页，否则再登录
+    @GetMapping("/login.html")
+    public String login(HttpSession session){
+        if(session.getAttribute(AuthConstants.LOGIN_USER)==null){
+            return "login";
+        }else{
+            return "redirect:http://gulimall.com";
+        }
+    }
+
 }

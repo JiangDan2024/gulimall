@@ -49,6 +49,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         checkUsernameUnique(vo.getUserName());
         checkPhoneUnique(vo.getPhone());
         member.setUsername(vo.getUserName());
+        member.setNickname(vo.getUserName());
         member.setPassword(vo.getPassword());
         //密码加密
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -104,6 +105,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
                     long gender = userMap.get("gender") == "f" ? 1L : 0;
                     //其他内容
                     //TODO 默认等级 其他默认信息
+                    member.setNickname(name);
                     member.setUsername(name);
                     member.setGender(gender);
                 }
@@ -115,15 +117,15 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
             member.setExpiresIn(Long.valueOf(vo.getExpiresIn()));
             //新增member
             memberMapper.insert(member);
+            return member;
         }else{
             //如果用户已有账号，需要更新accessToken和expiresIn
             update.setSocialUid(vo.getUid());
             update.setAccessToken(vo.getAccessToken());
             update.setExpiresIn(Long.valueOf(vo.getExpiresIn()));
             memberMapper.updateById(update);
+            return update;
         }
-
-        return null;
     }
 
     private void checkPhoneUnique(String phone) throws PhoneExistException{

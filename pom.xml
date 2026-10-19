@@ -26,6 +26,9 @@
         <module>gulimall-third-party</module>
         <module>gulimall-search</module>
         <module>gulimall-auth-server</module>
+        <module>gulimall-test-sso-server</module>
+        <module>gulimall-test-sso-client1</module>
+        <module>gulimall-test-sso-client2</module>
     </modules>
 
     <dependencies>

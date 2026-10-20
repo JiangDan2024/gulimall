@@ -17,45 +17,18 @@
         <module name="gulimall-gateway" />
         <module name="gulimall-product" />
       </profile>
-      <profile name="Annotation profile for gulimall-test-sso-server" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="E:/MAVEN—local repository/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
-          <entry name="E:/MAVEN—local repository/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
-        </processorPath>
-        <module name="gulimall-test-sso-server" />
-      </profile>
       <profile name="Annotation profile for gulimall" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
-          <entry name="E:/MAVEN—local repository/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
-          <entry name="E:/MAVEN—local repository/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
-        </processorPath>
-        <module name="gulimall-auth-server" />
-      </profile>
-      <profile name="Annotation profile for gulimall-test-sso-client1 (1)" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="E:/MAVEN—local repository/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
           <entry name="E:/MAVEN—local repository/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
         </processorPath>
         <module name="gulimall-test-sso-client1 (1)" />
-      </profile>
-      <profile name="Annotation profile for gulimall-test-sso-client1 (2)" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="E:/MAVEN—local repository/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
-        </processorPath>
+        <module name="gulimall-auth-server" />
         <module name="gulimall-test-sso-client1 (2)" />
+        <module name="gulimall-test-sso-server" />
+        <module name="gulimall-cart" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -65,6 +38,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="gulimall-auth-server" options="-parameters" />
+      <module name="gulimall-cart" options="-parameters" />
       <module name="gulimall-common" options="-parameters" />
       <module name="gulimall-coupon" options="-parameters" />
       <module name="gulimall-gateway" options="-parameters" />

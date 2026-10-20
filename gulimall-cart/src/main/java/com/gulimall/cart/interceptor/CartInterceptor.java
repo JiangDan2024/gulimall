@@ -24,28 +24,24 @@ public class CartInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
         MemberVo member = (MemberVo) session.getAttribute(AuthConstants.LOGIN_USER);
         UserInfoTo userInfoTo = new UserInfoTo();
-        if(member == null){
-            userInfoTo.setTempUser(true);
-            //没登录，临时用户，看cookie有无user-key？无放session一个新user-key，有则得到
-            Cookie[] cookies = request.getCookies();
-            if (cookies != null&&cookies.length>0) {
-                for(Cookie cookie : cookies){
-                    if(StringUtils.equals(cookie.getName(), CartConstant.TEMP_USER_COOKIE_NAME)){
-                        //已有user-key
-                        userInfoTo.setUserKey(cookie.getValue());
-//                        userInfoTo.setTempUser(true);
-                    }
-                }
-            }
-        }else{
+        if(member != null){
             //已登录
             userInfoTo.setUserId(member.getId().toString());
         }
-
+        //没登录，临时用户，看cookie有无user-key？无放session一个新user-key，有则得到
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null&&cookies.length>0) {
+            for(Cookie cookie : cookies){
+                if(StringUtils.equals(cookie.getName(), CartConstant.TEMP_USER_COOKIE_NAME)){
+                    //已有user-key
+                    userInfoTo.setUserKey(cookie.getValue());
+                        userInfoTo.setTempUser(true);
+                }
+            }
+        }
         if(StringUtils.isEmpty(userInfoTo.getUserKey())){
             String string = UUID.randomUUID().toString();
             userInfoTo.setUserKey(string);
-//            userInfoTo.setTempUser(true);
         }
         //放入ThreadLocal便于快速得到值
         userInfoToThreadLocal.set(userInfoTo);

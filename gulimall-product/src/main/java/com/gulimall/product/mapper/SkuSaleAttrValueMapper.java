@@ -15,5 +15,7 @@ import java.util.List;
  */
 public interface SkuSaleAttrValueMapper extends BaseMapper<SkuSaleAttrValue> {
     List<SaleAttrVo> getSaleAttrsBySpuId(@Param("spuId") Long spuId);
+
+    List<String> getSkuAttrValues(@Param("skuId") Long skuId);
     // 单表 CRUD 由 BaseMapper 提供，如有复杂连表查询可在此处扩展
 }

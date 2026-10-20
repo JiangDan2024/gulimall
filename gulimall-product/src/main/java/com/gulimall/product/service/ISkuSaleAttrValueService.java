@@ -16,5 +16,7 @@ public interface ISkuSaleAttrValueService extends IService<SkuSaleAttrValue> {
     void saveSkuSaleAttrs(List<SkuSaleAttrValue> skuSaleAttrList);
 
     List<SaleAttrVo> getSaleAttrsBySpuId(Long spuId);
+
+    List<String> getSkuAttrValues(Long skuId);
     // 单表 CRUD 由 IService 提供，如有自定义业务方法可在此处扩展
 }

@@ -38,6 +38,11 @@ public class SkuSaleAttrValueController extends BaseController
     @Autowired
     private ISkuSaleAttrValueService skuSaleAttrValueService;
 
+
+    @GetMapping("/stringList/{skuId}")
+    public List<String> getSkuAttrValues(@PathVariable("skuId") Long skuId){
+        return skuSaleAttrValueService.getSkuAttrValues(skuId);
+    }
     /**
      * 查询【请填写功能名称】列表
      */

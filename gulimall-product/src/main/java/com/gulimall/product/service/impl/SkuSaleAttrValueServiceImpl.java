@@ -34,5 +34,11 @@ public class SkuSaleAttrValueServiceImpl extends ServiceImpl<SkuSaleAttrValueMap
         List<SaleAttrVo> saleAttrVos = skuSaleAttrValueMapper.getSaleAttrsBySpuId(spuId);
         return saleAttrVos;
     }
+
+    @Override
+    public List<String> getSkuAttrValues(Long skuId) {
+        List<String> values = skuSaleAttrValueMapper.getSkuAttrValues(skuId);
+        return values;
+    }
     // 单表 CRUD 由 ServiceImpl 提供，如有自定义业务方法可在此处扩展
 }
